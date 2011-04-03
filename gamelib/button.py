@@ -2,17 +2,25 @@
 import game
 import random
 import os
+import pygame
 
 '''The ButtonSuite class.
 '''
-class Button(object):
+class Button(pygame.sprite.Sprite):
     '''Represents an abstract scene.
     '''
 
     def __init__(self, btnname):
+        pygame.sprite.Sprite.__init__(self)
         self.config = {}
         self.btnNameForDebugInLevelWhenUsingBtnList = btnname
-        
+        self.image = pygame.Surface([15, 15])
+        self.image.fill([255, 0, 0])
+
+        # Make our top-left corner the passed-in location.
+        self.rect = self.image.get_rect()
+        self.rect.topleft = [0,0]
+
     def __str__(self):
         return self.btnNameForDebugInLevelWhenUsingBtnList
     
