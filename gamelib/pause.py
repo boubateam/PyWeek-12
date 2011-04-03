@@ -1,16 +1,15 @@
-'''The level class.
+'''The intro scene.
 '''
 
+import time
 import pygame
 import scene
 
-class Level(scene.Scene):
-    '''Is the basic level.
-    '''
-    def __init__(self, director):
-        super(Level, self).__init__(director)
+class Pause(scene.Scene):
+    def __init__(self, game):
+        super(Pause, self).__init__(game)
 
-        self.text = self._create(37, 'Hello World from level')
+        self.text = self._create(37, 'Pause')
         self.textrect = self.text.get_rect()
 
     def _create(self, fontsize, text):
@@ -19,17 +18,10 @@ class Level(scene.Scene):
 
         return rend
 
-    def start(self):
-        pass
-    
-    def end(self):
-        pass
-    
     def handleEvent(self, event):
-        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.game.director.changeAndBack('pause')
+                self.game.director.endScene()
 
     def update(self):
         self.textrect.center = (320, 240)

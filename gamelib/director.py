@@ -19,8 +19,9 @@ class Director(object):
 
     def __init__(self, config=None):
         self.config = {}
-        self.delay  = 0
         self.config.update(self.defaults)
+
+        self.delay = 0
 
         if config:
             self.config.update(config)
@@ -37,6 +38,7 @@ class Director(object):
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.forceIndex = None
         self.index = None
         self.scene = None
         self.scenes = []
@@ -60,6 +62,10 @@ class Director(object):
         self.index = index
         self.scene = self.scenes[index][1]
         self.scene.start()
+
+    def changeAndBack(self, name):
+        self.forceIndex = self.index
+        self.change(name)
 
     def run(self):
         while self.running:
@@ -96,7 +102,10 @@ class Director(object):
         self.running = False
 
     def endScene(self):
-        if self.index + 1 < len(self.scenes):
+        if not self.forceIndex == None:
+            self.change(self.scenes[self.forceIndex][0])
+            self.forceIndex = None
+        elif self.index + 1 < len(self.scenes):
             self.change(self.scenes[self.index + 1][0])
         else:
             self.end()

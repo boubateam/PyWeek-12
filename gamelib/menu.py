@@ -12,8 +12,8 @@ class Menu(pygame.surface.Surface):
         self.menus = menus
         self.current = 0
 
-        self.current = None
-        self.currentrect = None
+        self.menu = None
+        self.menurect = None
 
         self.set_colorkey((0, 0, 0)) # Transparent background
 
@@ -27,13 +27,13 @@ class Menu(pygame.surface.Surface):
             if self.current == i:
                 fontcolor = (255, 255, 0)
 
-            self.current, self.currentrect = self._create(text, fontcolor)
-            self.currentrect.centerx = self.get_rect().centerx
-            self.currentrect.top = top
+            self.menu, self.menurect = self._create(text, fontcolor)
+            self.menurect.centerx = self.get_rect().centerx
+            self.menurect.top = top
 
-            top = top + self.currentrect.height * 1.5
+            top = top + self.menurect.height * 1.5
 
-            self.blit(self.current, self.currentrect)
+            self.blit(self.menu, self.menurect)
 
     def prev(self):
         self.current = self.current - 1
@@ -67,12 +67,6 @@ class MenuScene(scene.Scene):
         self.menu = Menu(size, menus)
         self.menurect = self.menu.get_rect()
 
-    def start(self):
-        pass
-
-    def end(self):
-        pass
-
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
@@ -102,7 +96,7 @@ class MainMenuScene(MenuScene):
         MenuScene.__init__(self, game, (320, 240), menus)
 
     def play(self):
-        self.game.director.change('game')
+        self.game.director.endScene()
 
     def exit(self):
         self.game.end()
