@@ -15,6 +15,7 @@ class Game(object):
 
     def __init__(self):
         self.level  = None
+        self.difficulty = 4
         self.points = 0
         self.director = director.Director({
             'title' : 'PyGame',

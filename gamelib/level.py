@@ -3,15 +3,18 @@
 
 import pygame
 import scene
+import button
 
 class Level(scene.Scene):
     '''Is the basic level.
     '''
-    def __init__(self, director):
-        super(Level, self).__init__(director)
+    def __init__(self, game):
+        super(Level, self).__init__(game)
 
         self.text = self._create(37, 'Hello World from level')
         self.textrect = self.text.get_rect()
+        self.buttonList = button.ButtonsList(game)
+        self.buttonList.debug()
 
     def _create(self, fontsize, text):
         font = pygame.font.Font(None, fontsize)
