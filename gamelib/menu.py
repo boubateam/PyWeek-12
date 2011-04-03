@@ -100,3 +100,19 @@ class MainMenuScene(MenuScene):
 
     def exit(self):
         self.game.end()
+
+class PauseMenuScene(MenuScene):
+    '''Pause Menu
+    '''
+
+    def __init__(self, game):
+        menus = (('Resume', self.cont),
+                 ('Back to Menu', self.back))
+
+        MenuScene.__init__(self, game, (320, 240), menus)
+
+    def cont(self):
+        self.game.director.endScene()
+
+    def back(self):
+        self.game.director.change('menu')
