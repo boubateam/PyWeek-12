@@ -6,8 +6,8 @@ import director
 
 from intro import IntroScene
 from menu import MainMenuScene, PauseMenuScene
+from credits import CreditsScene
 from level import Level
-from pause import Pause
 
 class Game(object):
     '''Manage the general game logic.
@@ -32,5 +32,5 @@ class Game(object):
         self.director.register('intro', IntroScene(self))
         self.director.register('menu', MainMenuScene(self))
         self.director.register('level1', Level(self))
-
+        self.director.register('credits', CreditsScene(self))
         self.director.register('pause', PauseMenuScene(self))

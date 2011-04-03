@@ -20,12 +20,6 @@ class Level(scene.Scene):
 
         return rend
 
-    def start(self):
-        pass
-
-    def end(self):
-        pass
-
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
