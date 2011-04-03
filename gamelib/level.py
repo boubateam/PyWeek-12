@@ -39,7 +39,8 @@ class Level(scene.Scene):
 
     def draw(self, screen):
         screen.blit(self.text, self.textrect)
-        b = 0
+        rectbase = self.text.get_rect()
+        rectbase[1] += 50
         for i in self.buttonList.buttons:
-            b += 50
-            screen.blit(i.image, [b, b])
+            rectbase[0] += 50
+            screen.blit(i.image, rectbase)
