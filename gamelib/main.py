@@ -7,16 +7,10 @@ package.
 '''
 
 import pygame
-import director
-
-from intro import IntroScene
+import game
 
 def main():
     pygame.init();
 
-    g = director.Director({
-        'title' : 'PyGame',
-        'show_fps' : True, "framerate" : 100})
-    g.register('intro', IntroScene)
-    g.change('intro')
+    g = game.Game()
     g.run()

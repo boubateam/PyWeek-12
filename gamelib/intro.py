@@ -26,7 +26,7 @@ class IntroScene(scene.Scene):
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                self.director.end()
+                self.game.end()
 
     def update(self):
         self.textrect.center = (320, 240)

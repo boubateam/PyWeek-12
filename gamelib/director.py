@@ -39,13 +39,13 @@ class Director(object):
         self.scene = None
         self.scenes = {}
 
-    def register(self, name, klass):
+    def register(self, name, instance):
         if name in self.scenes:
             raise KeyError('Scene %s already registered' % (name, ))
-        if not issubclass(klass, scene.Scene):
+        if not isinstance(instance, scene.Scene):
             raise TypeError('Class passed is not a Scene')
 
-        self.scenes[name] = klass(self)
+        self.scenes[name] = instance
 
     def unregister(self, name):
         if not name in self.scenes:

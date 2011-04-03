@@ -5,8 +5,8 @@ class Scene(object):
     '''Represents an abstract scene.
     '''
 
-    def __init__(self, director):
-        self.director = director
+    def __init__(self, game):
+        self.game = game
 
     def start(self):
         raise NotImplementedError()
