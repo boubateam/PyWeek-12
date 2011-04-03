@@ -1,9 +1,10 @@
 Your Game Title
 ===============
 
-Entry in PyWeek #4  <http://www.pyweek.org/4/>
-Team: YOUR TEAM NAME (leave the "Team: bit")
-Members: YOUR TEAM MEMBERS (leave the "Members: bit")
+Entry in PyWeek #12 <http://www.pyweek.org/12/>
+Team: Bouba Team
+Members: ahsio, cyqui, gleuh, greg0ire, joksnet, tocab, TOTOleHero
+
 
 
 DEPENDENCIES:
@@ -12,7 +13,6 @@ You might need to install some of these before running the game:
 
   Python:     http://www.python.org/
   PyGame:     http://www.pygame.org/
-  PyOpenGL:   http://pyopengl.sf.net/
 
 
 
@@ -37,4 +37,3 @@ Press the left mouse button to fire the ducks.
 LICENSE:
 
 This game skellington is placed in the Public Domain.
-
