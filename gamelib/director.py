@@ -19,6 +19,7 @@ class Director(object):
 
     def __init__(self, config=None):
         self.config = {}
+        self.delay  = 0
         self.config.update(self.defaults)
 
         if config:
@@ -36,31 +37,28 @@ class Director(object):
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.index = None
         self.scene = None
-        self.scenes = {}
+        self.scenes = []
 
     def register(self, name, instance):
-        if name in self.scenes:
-            raise KeyError('Scene %s already registered' % (name, ))
         if not isinstance(instance, scene.Scene):
             raise TypeError('Class passed is not a Scene')
 
-        self.scenes[name] = instance
-
-    def unregister(self, name):
-        if not name in self.scenes:
-            raise KeyError('Scene %s not found' % (name, ))
-
-        del self.scenes[name]
+        self.scenes.append((name, instance))
 
     def change(self, name):
-        if not name in self.scenes:
-            raise KeyError('Scene %s not found' % (name, ))
-
         if self.scene:
             self.scene.end()
 
-        self.scene = self.scenes[name]
+        index = None
+
+        for value in self.scenes:
+            if value[0] == name:
+                index = self.scenes.index(value)
+
+        self.index = index
+        self.scene = self.scenes[index][1]
         self.scene.start()
 
     def run(self):
@@ -96,3 +94,9 @@ class Director(object):
 
     def end(self):
         self.running = False
+
+    def endScene(self):
+        if self.index + 1 < len(self.scenes):
+            self.change(self.scenes[self.index + 1][0])
+        else:
+            self.end()

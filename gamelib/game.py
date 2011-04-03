@@ -1,10 +1,11 @@
-'''The great director class.
+'''The game logic.
 '''
 
 import pygame
 import director
 
 from intro import IntroScene
+from level import Level
 
 class Game(object):
     '''Manage the general game logic.
@@ -15,9 +16,7 @@ class Game(object):
         self.director = director.Director({
             'title' : 'PyGame',
             'show_fps' : True})
-        
 
-        
     def run(self):
         self.initLevels()
         self.director.change('intro')
@@ -28,6 +27,5 @@ class Game(object):
         
     def initLevels(self):
         self.director.register('intro', IntroScene(self))
-        
-    def sceneEnd(self):
-        pass
+        self.director.register('level1', Level(self))
+        self.director.register('level2', Level(self))

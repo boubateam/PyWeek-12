@@ -9,10 +9,10 @@ class Scene(object):
         self.game = game
 
     def start(self):
-        raise NotImplementedError()
+        pass
     
     def end(self):
-        raise NotImplementedError()
+        pass
     
     def handleEvent(self, event):
         raise NotImplementedError()

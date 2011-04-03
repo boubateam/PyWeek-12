@@ -1,12 +1,13 @@
 '''The intro scene.
 '''
 
+import time
 import pygame
 import scene
 
 class IntroScene(scene.Scene):
-    def __init__(self, director):
-        super(IntroScene, self).__init__(director)
+    def __init__(self, game):
+        super(IntroScene, self).__init__(game)
 
         self.text = self._create(37, 'Hello World')
         self.textrect = self.text.get_rect()
@@ -17,16 +18,12 @@ class IntroScene(scene.Scene):
 
         return rend
 
-    def start(self):
-        pass
-    
-    def end(self):
-        pass
-    
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.end()
+            elif event.key == pygame.K_SPACE:
+                self.game.director.endScene()
 
     def update(self):
         self.textrect.center = (320, 240)
