@@ -45,7 +45,7 @@ class Director(object):
         if not issubclass(klass, scene.Scene):
             raise TypeError('Class passed is not a Scene')
 
-        self.scenes[name] = klass
+        self.scenes[name] = klass(self)
 
     def unregister(self, name):
         if not name in self.scenes:
@@ -57,8 +57,11 @@ class Director(object):
         if not name in self.scenes:
             raise KeyError('Scene %s not found' % (name, ))
 
-        self.scene = self.scenes[name](self)
-        self.scene.changed()
+        if self.scene:
+            self.scene.end()
+
+        self.scene = self.scenes[name]
+        self.scene.start()
 
     def run(self):
         while self.running:
@@ -71,7 +74,7 @@ class Director(object):
                 if event.type == pygame.QUIT:
                     self.end()
                 else:
-                    self.scene.event(event)
+                    self.scene.handleEvent(event)
 
             self.screen.fill((0, 0, 0))
 

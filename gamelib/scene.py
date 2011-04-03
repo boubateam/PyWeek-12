@@ -8,10 +8,13 @@ class Scene(object):
     def __init__(self, director):
         self.director = director
 
-    def changed(self):
+    def start(self):
         raise NotImplementedError()
-
-    def event(self, event):
+    
+    def end(self):
+        raise NotImplementedError()
+    
+    def handleEvent(self, event):
         raise NotImplementedError()
 
     def update(self):

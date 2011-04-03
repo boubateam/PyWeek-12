@@ -17,10 +17,13 @@ class IntroScene(scene.Scene):
 
         return rend
 
-    def changed(self):
+    def start(self):
         pass
-
-    def event(self, event):
+    
+    def end(self):
+        pass
+    
+    def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.director.end()

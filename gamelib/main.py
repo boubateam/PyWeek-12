@@ -16,7 +16,7 @@ def main():
 
     g = director.Director({
         'title' : 'PyGame',
-        'show_fps' : True})
+        'show_fps' : True, "framerate" : 100})
     g.register('intro', IntroScene)
     g.change('intro')
     g.run()
