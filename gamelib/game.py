@@ -14,7 +14,7 @@ class Game(object):
     '''
 
     def __init__(self):
-        self.level  = None
+        self.level = None
         self.points = 0
         self.director = director.Director({
             'title' : 'PyGame',
@@ -24,10 +24,10 @@ class Game(object):
         self.initLevels()
         self.director.change('intro')
         self.director.run()
-        
+
     def end(self):
         self.director.end()
-        
+
     def initLevels(self):
         self.director.register('intro', IntroScene(self))
         self.director.register('main_menu', MainMenuScene(self))

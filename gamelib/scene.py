@@ -10,10 +10,10 @@ class Scene(object):
 
     def start(self):
         pass
-    
+
     def end(self):
         pass
-    
+
     def handleEvent(self, event):
         raise NotImplementedError()
 
