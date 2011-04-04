@@ -11,6 +11,9 @@ import game
 
 def main():
     pygame.init();
-
+    pygame.mixer.init(frequency=44100)
+    
+    print(pygame.mixer.get_init())
+    
     g = game.Game()
     g.run()
