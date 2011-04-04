@@ -16,13 +16,21 @@ class LevelScene(scene.Scene):
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15)
 
         #self.sequence.play(1)
+        self.playing = True
+        self.play = []
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
-        elif event.type == pygame.MOUSEBUTTONUP:
-            self.buttons.click(event)
+        elif self.playing and event.type == pygame.MOUSEBUTTONUP:
+            index = self.buttons.click(event)
+
+            if index:
+                self.play.append(index)
+
+                if not self.sequence.validate(self.play):
+                    self.game.director.change('gameover')
 
     def update(self):
         self.sequence.update()

@@ -70,6 +70,14 @@ class SequenceButtonGroup(ButtonGroup):
         ButtonGroup.__init__(self, size, position, space, count)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
+        print self.sequence
+
+    def validate(self, play):
+        for i in range(len(play)):
+            if self.sequence[i] != play[i]:
+                return False
+
+        return True
 
     def update(self):
         ButtonGroup.update(self)
@@ -80,9 +88,14 @@ class PlayableButtonGroup(ButtonGroup):
 
     def click(self, event):
         if self.animating == 0: # One button a la fois
-            for button in self:
+            for index in range(self.count):
+                button = self.get(index)
+
                 if button.rect.collidepoint(event.pos):
                     self.animate(button)
+                    return index
+
+        return None
 
     def update(self):
         ButtonGroup.update(self)
