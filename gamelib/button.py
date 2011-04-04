@@ -6,16 +6,23 @@ class Button(pygame.sprite.Sprite):
     '''The Button class.
     '''
 
-    def __init__(self, name, rect):
+    def __init__(self, name, pos):
         pygame.sprite.Sprite.__init__(self)
 
         self.btnNameForDebugInLevelWhenUsingBtnList = name
 
         self.image = pygame.Surface((15, 15))
-        self.image.fill((255, 0, 0))
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = rect
+        self.rect.topleft = pos
+
+        self.active = False
+
+    def update(self):
+        if self.active:
+            self.image.fill((0, 0, 255))
+        else:
+            self.image.fill((255, 0, 0))
 
     def __str__(self):
         return self.btnNameForDebugInLevelWhenUsingBtnList
@@ -40,3 +47,8 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
 
         print 'sequence:', self.sequence
+
+    def click(self, event):
+        for button in self:
+            if button.rect.collidepoint(event.pos):
+                button.active = True

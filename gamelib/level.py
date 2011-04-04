@@ -27,6 +27,8 @@ class Level(scene.Scene):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.buttons.click(event)
 
     def update(self):
         self.textrect.center = (320, 240)
