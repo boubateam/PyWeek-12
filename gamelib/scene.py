@@ -5,11 +5,14 @@ class Scene(object):
     '''Represents an abstract scene.
     '''
 
+    name = ''
+
     def __init__(self, game):
         self.game = game
-
-    def start(self):
-        pass
+       
+    def start(self,name):
+        self.name = name
+        print('start ' + self.name)
 
     def end(self):
         pass

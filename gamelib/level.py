@@ -4,6 +4,7 @@
 import pygame
 import scene
 import button
+import data
 
 class LevelScene(scene.Scene):
     '''Is the basic level.
@@ -18,6 +19,17 @@ class LevelScene(scene.Scene):
         #self.sequence.play(1)
         self.playing = True
         self.play = []
+    
+    def start(self,name):
+        super(LevelScene, self).start(name)
+        self.music_pre_bg = data.load_sound('pre-background.ogg',name)
+        self.music_bg = data.load_sound('background.ogg',name)
+        self.music_pre_bg.play()
+        self.music_bg.play(-1,fade_ms=4000)
+
+    def end(self):
+        self.music.fadeout(2000)
+        super(LevelScene, self).end()
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:

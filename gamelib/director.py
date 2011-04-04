@@ -64,7 +64,7 @@ class Director(object):
 
         self.index = index
         self.scene = self.scenes[index][1]
-        self.scene.start()
+        self.scene.start(name)
 
     def changeAndBack(self, name):
         self.forceIndex = self.index

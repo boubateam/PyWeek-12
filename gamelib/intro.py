@@ -13,14 +13,15 @@ class IntroScene(scene.Scene):
 
         self.text = data.render_text(None, 37, 'Welcome to Garfunkel', (255, 255, 255))
         self.textrect = self.text.get_rect()
-        self.music = data.load_sound('intro.ogg')
+        
 
-    def start(self):
-        super(IntroScene, self).start()
-        self.music.play(-1)
+    def start(self,name):
+        super(IntroScene, self).start(name)
+        self.music = data.load_sound('intro.ogg')
+        self.music.play(-1,fade_ms=4000)
 
     def end(self):
-        self.music.stop()
+        self.music.fadeout(2000)
         super(IntroScene, self).end()
 
     def handleEvent(self, event):
