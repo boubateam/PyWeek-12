@@ -71,6 +71,12 @@ class SequenceButtonGroup(ButtonGroup):
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
         print self.sequence
+        #clone so sequence can be used next to check if user clicks is the good result
+        self.popableSequence = self.sequence
+        self.prevPoppedIdx = None
+        self.currentBtnIdx = None
+        self.seqDisplayRate = 20
+        self.seqDisplayRateCounter = self.seqDisplayRate
 
     def validate(self, play):
         for i in range(len(play)):
@@ -78,8 +84,37 @@ class SequenceButtonGroup(ButtonGroup):
                 return False
 
         return True
+        
+    def notifySequencePlayed(self):
+        print "sequence played"
+        #todo what should be done now ?
+    
+    def changeButton(self):
+
+        try:
+            self.currentBtnIdx = self.popableSequence.pop(0)
+        except IndexError:
+            self.notifySequencePlayed()
+
+        buttons = self.sprites()
+
+        try:
+            buttons[self.currentBtnIdx].active = True  
+            if not self.prevPoppedIdx == None:
+                buttons[self.prevPoppedIdx].active = False 
+        except IndexError:
+            pass
+        
+        self.prevPoppedIdx = self.currentBtnIdx
 
     def update(self):
+        
+        if  self.seqDisplayRateCounter == 0:
+            self.changeButton()
+            self.seqDisplayRateCounter = self.seqDisplayRate    
+        else:
+            self.seqDisplayRateCounter -= 1
+        
         ButtonGroup.update(self)
 
 class PlayableButtonGroup(ButtonGroup):
