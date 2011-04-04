@@ -1,4 +1,4 @@
-'''The level class.
+'''The level classes.
 '''
 
 import pygame
@@ -14,8 +14,8 @@ class Level(scene.Scene):
 
         self.text = self._create(37, 'Hello World from Level')
         self.textrect = self.text.get_rect()
-        self.buttonList = button.ButtonsList(game)
-        self.buttonList.debug()
+
+        self.buttons = button.ButtonGroup()
 
     def _create(self, fontsize, text):
         font = pygame.font.Font(None, fontsize)
@@ -30,12 +30,8 @@ class Level(scene.Scene):
 
     def update(self):
         self.textrect.center = (320, 240)
+        self.buttons.update()
 
     def draw(self, screen):
         screen.blit(self.text, self.textrect)
-
-        rectbase = self.text.get_rect()
-        rectbase[1] += 50
-        for i in self.buttonList.buttons:
-            rectbase[0] += 50
-            screen.blit(i.image, rectbase)
+        self.buttons.draw(screen)
