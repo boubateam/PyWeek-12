@@ -1,6 +1,7 @@
 
 import pygame
 import random
+import os
 
 class Button(pygame.sprite.Sprite):
     '''The Button class.
@@ -70,20 +71,12 @@ class SequenceButtonGroup(ButtonGroup):
         ButtonGroup.__init__(self, size, position, space, count)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
-        print self.sequence
         #clone so sequence can be used next to check if user clicks is the good result
         self.popableSequence = self.sequence
         self.prevPoppedIdx = None
         self.currentBtnIdx = None
         self.seqDisplayRate = 20
         self.seqDisplayRateCounter = self.seqDisplayRate
-
-    def validate(self, play):
-        for i in range(len(play)):
-            if self.sequence[i] != play[i]:
-                return False
-
-        return True
         
     def notifySequencePlayed(self):
         print "sequence played"
@@ -117,20 +110,17 @@ class SequenceButtonGroup(ButtonGroup):
         
         ButtonGroup.update(self)
 
+
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9):
         ButtonGroup.__init__(self, size, position, space, count)
 
     def click(self, event):
         if self.animating == 0: # One button a la fois
-            for index in range(self.count):
-                button = self.get(index)
-
+            for button in self:
                 if button.rect.collidepoint(event.pos):
                     self.animate(button)
-                    return index
-
-        return None
 
     def update(self):
         ButtonGroup.update(self)
+
