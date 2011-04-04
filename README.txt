@@ -1,5 +1,5 @@
-Your Game Title
-===============
+Garfunkel
+=========
 
 Entry in PyWeek #12 <http://www.pyweek.org/12/>
 Team: Bouba Team
