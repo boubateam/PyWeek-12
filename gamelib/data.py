@@ -32,7 +32,7 @@ def load_font(name, size):
     filename = None
 
     if not name == None:
-        filename = filepath('fonts/' + name)
+        filename = filepath(os.path.join('fonts', name))
 
     return pygame.font.Font(filename, size)
 
