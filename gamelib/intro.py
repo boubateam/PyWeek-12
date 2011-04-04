@@ -12,7 +12,7 @@ class IntroScene(scene.Scene):
     def __init__(self, game):
         super(IntroScene, self).__init__(game)
 
-        self.text = self._create(37, 'Hello World')
+        self.text = self._create(37, 'Welcome to Garfunkel')
         self.textrect = self.text.get_rect()
         self.music = pygame.mixer.Sound(data.filepath('intro.ogg'))
          
