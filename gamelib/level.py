@@ -5,23 +5,15 @@ import pygame
 import scene
 import button
 
-class Level(scene.Scene):
+class LevelScene(scene.Scene):
     '''Is the basic level.
     '''
 
-    def __init__(self, game):
-        super(Level, self).__init__(game)
+    def __init__(self, game, count=9):
+        super(LevelScene, self).__init__(game)
 
-        self.text = self._create(37, 'Hello World from Level')
-        self.textrect = self.text.get_rect()
-
-        self.buttons = button.ButtonGroup()
-
-    def _create(self, fontsize, text):
-        font = pygame.font.Font(None, fontsize)
-        rend = font.render(text, False, (255, 255, 255))
-
-        return rend
+        self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 5)
+        self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15)
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -31,9 +23,9 @@ class Level(scene.Scene):
             self.buttons.click(event)
 
     def update(self):
-        self.textrect.center = (320, 240)
+        self.sequence.update()
         self.buttons.update()
 
     def draw(self, screen):
-        screen.blit(self.text, self.textrect)
+        self.sequence.draw(screen)
         self.buttons.draw(screen)
