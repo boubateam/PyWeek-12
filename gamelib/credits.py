@@ -3,30 +3,26 @@
 
 import pygame
 import scene
+import data
 
 class CreditsScene(scene.Scene):
     def __init__(self, game):
         super(CreditsScene, self).__init__(game)
 
-        self.text = self._create(37, 'Bouba Team')
+        self.text = data.render_text(None, 37, 'Bouba Team', (255, 255, 255))
         self.textrect = self.text.get_rect()
 
+        font = data.load_font(None, 17)
         names = ('ahsio', 'cyqui', 'gleuh', 'greg0ire', 'joksnet',
             'tocab', 'TOTOleHero')
 
         self.names = []
 
         for name in names:
-            rend = self._create(17, name)
+            rend = font.render(name, True, (255, 255, 255))
             rect = rend.get_rect()
 
             self.names.append((rend, rect))
-
-    def _create(self, fontsize, text):
-        font = pygame.font.Font(None, fontsize)
-        rend = font.render(text, False, (255, 255, 255))
-
-        return rend
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:

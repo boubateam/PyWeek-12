@@ -11,9 +11,9 @@ class IntroScene(scene.Scene):
     def __init__(self, game):
         super(IntroScene, self).__init__(game)
 
-        self.text = self._create(37, 'Hello World')
+        self.text = data.render_text(None, 37, 'Hello World', (255, 255, 255))
         self.textrect = self.text.get_rect()
-        self.music = pygame.mixer.Sound(data.filepath('intro.ogg'))
+        self.music = data.load_sound('intro.ogg')
 
     def start(self):
         super(IntroScene, self).start()
@@ -22,12 +22,6 @@ class IntroScene(scene.Scene):
     def end(self):
         self.music.stop()
         super(IntroScene, self).end()
-
-    def _create(self, fontsize, text):
-        font = pygame.font.Font(None, fontsize)
-        rend = font.render(text, False, (255, 255, 255))
-
-        return rend
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:

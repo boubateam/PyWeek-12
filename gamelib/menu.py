@@ -1,6 +1,7 @@
 
 import pygame
 import scene
+import data
 
 class Menu(pygame.surface.Surface):
     '''Menu
@@ -15,6 +16,7 @@ class Menu(pygame.surface.Surface):
         self.menu = None
         self.menurect = None
 
+        self.font = data.load_font(None, 37)
         self.set_colorkey((0, 0, 0)) # Transparent background
 
     def update(self):
@@ -22,12 +24,13 @@ class Menu(pygame.surface.Surface):
 
         for i in range(len(self.menus)):
             text, action = self.menus[i]
-            fontcolor = (255, 255, 255)
+            color = (255, 255, 255)
 
             if self.current == i:
-                fontcolor = (255, 255, 0)
+                color = (255, 255, 0)
 
-            self.menu, self.menurect = self._create(text, fontcolor)
+            self.menu = self.font.render(text, True, color)
+            self.menurect = self.menu.get_rect()
             self.menurect.centerx = self.get_rect().centerx
             self.menurect.top = top
 
@@ -50,12 +53,6 @@ class Menu(pygame.surface.Surface):
     def execute(self):
         text, action = self.menus[self.current]
         action()
-
-    def _create(self, text, fontcolor=None):
-        font = pygame.font.Font(None, 37)
-        rend = font.render(text, False, fontcolor or (255, 255, 255))
-
-        return rend, rend.get_rect()
 
 class MenuScene(scene.Scene):
     '''Menu Scene

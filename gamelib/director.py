@@ -89,7 +89,7 @@ class Director(object):
             self.scene.draw(self.screen)
 
             if self.config['show_fps']:
-                font = pygame.font.Font(None, 23)
+                font = data.load_font(None, 23)
                 fps = '%.1f' % self.clock.get_fps()
                 text = font.render(fps, False, (255, 0, 255))
 

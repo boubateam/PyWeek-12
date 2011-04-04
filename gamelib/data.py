@@ -29,5 +29,18 @@ def load_image(filename):
     return pygame.image.load(filepath(filename)).convert()
 
 def load_font(name, size):
+    filename = None
+
     if not name == None:
-        pass
+        filename = filepath(name)
+
+    return pygame.font.Font(filename, size)
+
+def load_sound(filename):
+    return pygame.mixer.Sound(filepath('intro.ogg'))
+
+def render_text(fontname, fontsize, text, color):
+    font = load_font(fontname, fontsize)
+    rend = font.render(text, True, color)
+
+    return rend

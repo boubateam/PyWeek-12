@@ -3,19 +3,14 @@
 
 import pygame
 import scene
+import data
 
 class GameOverScene(scene.Scene):
     def __init__(self, game):
         super(GameOverScene, self).__init__(game)
 
-        self.text = self._create(37, 'Game Over')
+        self.text = data.render_text(None, 37, 'Game Over', (255, 255, 255))
         self.textrect = self.text.get_rect()
-
-    def _create(self, fontsize, text):
-        font = pygame.font.Font(None, fontsize)
-        rend = font.render(text, False, (255, 255, 255))
-
-        return rend
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONUP:
