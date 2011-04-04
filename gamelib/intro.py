@@ -1,4 +1,7 @@
 '''The intro scene.
+
+04/04/2011 : add sound
+
 '''
 
 import pygame
