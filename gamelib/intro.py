@@ -11,7 +11,7 @@ class IntroScene(scene.Scene):
     def __init__(self, game):
         super(IntroScene, self).__init__(game)
 
-        self.text = data.render_text(None, 37, 'Welcome to Garfunkel', (255, 255, 255))
+        self.text = data.render_text('LiberationSans-Regular.ttf', 37, 'Welcome to Garfunkel', (255, 255, 255))
         self.textrect = self.text.get_rect()
         
 
