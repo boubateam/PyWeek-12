@@ -15,6 +15,8 @@ class LevelScene(scene.Scene):
         self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 5)
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15)
 
+        #self.sequence.play(1)
+
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:

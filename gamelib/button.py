@@ -9,8 +9,6 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, name, size, position):
         pygame.sprite.Sprite.__init__(self)
 
-        self.btnNameForDebugInLevelWhenUsingBtnList = name
-
         self.image = pygame.Surface(size)
 
         self.rect = self.image.get_rect()
@@ -23,9 +21,6 @@ class Button(pygame.sprite.Sprite):
             self.image.fill((0, 0, 255))
         else:
             self.image.fill((255, 0, 0))
-
-    def __str__(self):
-        return self.btnNameForDebugInLevelWhenUsingBtnList
 
 class ButtonGroup(pygame.sprite.OrderedUpdates):
     '''Contains buttons.
@@ -43,31 +38,51 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
 
         self.count = count
 
+        self.animating = 0
+        self.active = None
+
+    def get(self, index):
+        buttons = self.sprites()
+
+        try:
+            return buttons[index]
+        except IndexError:
+            return None
+
+    def update(self):
+        if not self.active:
+            self.animating = 0
+        elif self.animating == 0:
+            self.active.active = False
+            self.active = None
+        else:
+            self.active.active = True
+            self.animating -= 1
+
+        pygame.sprite.OrderedUpdates.update(self)
+
+    def animate(self, button):
+        self.active = button
+        self.animating = 40
+
 class SequenceButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9):
         ButtonGroup.__init__(self, size, position, space, count)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
-        print 'sequence:', self.sequence
+
+    def update(self):
+        ButtonGroup.update(self)
 
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9):
         ButtonGroup.__init__(self, size, position, space, count)
 
-        self.animating = 0
-
     def click(self, event):
         if self.animating == 0: # One button a la fois
             for button in self:
                 if button.rect.collidepoint(event.pos):
-                    button.active = True
-                    self.animating = 40
+                    self.animate(button)
 
     def update(self):
         ButtonGroup.update(self)
-
-        if self.animating == 0:
-            for button in self:
-                button.active = False
-        else:
-            self.animating -= 1
