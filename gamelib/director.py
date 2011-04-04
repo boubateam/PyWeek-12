@@ -59,6 +59,9 @@ class Director(object):
             if value[0] == name:
                 index = self.scenes.index(value)
 
+        if index == None:
+            raise KeyError('Scene %s not found' % (name, ))
+
         self.index = index
         self.scene = self.scenes[index][1]
         self.scene.start()

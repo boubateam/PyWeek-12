@@ -91,6 +91,7 @@ class MainMenuScene(MenuScene):
 
     def __init__(self, game):
         menus = (('Start Game', self.play),
+                 ('Credits', self.credits),
                  ('Exit', self.exit))
 
         MenuScene.__init__(self, game, (320, 240), menus)
@@ -98,5 +99,24 @@ class MainMenuScene(MenuScene):
     def play(self):
         self.game.director.endScene()
 
+    def credits(self):
+        self.game.director.changeAndBack('credits')
+
     def exit(self):
         self.game.end()
+
+class PauseMenuScene(MenuScene):
+    '''Pause Menu
+    '''
+
+    def __init__(self, game):
+        menus = (('Resume', self.cont),
+                 ('Back to Menu', self.back))
+
+        MenuScene.__init__(self, game, (320, 240), menus)
+
+    def cont(self):
+        self.game.director.endScene()
+
+    def back(self):
+        self.game.director.change('menu')

@@ -1,7 +1,6 @@
 '''The intro scene.
 '''
 
-import time
 import pygame
 import scene
 import data

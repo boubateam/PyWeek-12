@@ -27,3 +27,7 @@ def load_image(filename):
     '''Return a loaded image.
     '''
     return pygame.image.load(filepath(filename)).convert()
+
+def load_font(name, size):
+    if not name == None:
+        pass
