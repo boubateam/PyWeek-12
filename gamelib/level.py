@@ -3,6 +3,7 @@
 
 import pygame
 import scene
+import button
 
 class Level(scene.Scene):
     '''Is the basic level.
@@ -13,6 +14,8 @@ class Level(scene.Scene):
 
         self.text = self._create(37, 'Hello World from Level')
         self.textrect = self.text.get_rect()
+        self.buttonList = button.ButtonsList(game)
+        self.buttonList.debug()
 
     def _create(self, fontsize, text):
         font = pygame.font.Font(None, fontsize)
@@ -30,3 +33,9 @@ class Level(scene.Scene):
 
     def draw(self, screen):
         screen.blit(self.text, self.textrect)
+
+        rectbase = self.text.get_rect()
+        rectbase[1] += 50
+        for i in self.buttonList.buttons:
+            rectbase[0] += 50
+            screen.blit(i.image, rectbase)

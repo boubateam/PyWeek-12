@@ -41,7 +41,6 @@ class CreditsScene(scene.Scene):
         y += self.textrect.height * 1.5
 
         for value in self.names:
-            index = self.names.index(value)
             value[1].center = (x, y)
             y += value[1].height * 1.5
 
