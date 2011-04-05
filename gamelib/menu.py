@@ -58,11 +58,13 @@ class MenuScene(scene.Scene):
     '''Menu Scene
     '''
 
-    def __init__(self, game, size, menus):
+    def __init__(self, game, size, menus, bg='menu.png'):
         scene.Scene.__init__(self, game)
 
         self.menu = Menu(size, menus)
         self.menurect = self.menu.get_rect()
+
+        self.background = data.load_image(bg)
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -80,6 +82,7 @@ class MenuScene(scene.Scene):
         self.menurect.centerx = screen.get_rect().centerx
         self.menurect.centery = screen.get_rect().centery
 
+        screen.blit(self.background, (0, 0))
         screen.blit(self.menu, self.menurect)
 
 class MainMenuScene(MenuScene):
