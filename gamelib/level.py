@@ -24,6 +24,8 @@ class LevelScene(scene.Scene):
         super(LevelScene, self).start(name)
         self.music_pre_bg = data.load_sound('pre-background.ogg', name)
         self.music_bg = data.load_sound('background.ogg', name)
+        self.music_pre_bg.set_volume(0.1 )
+        self.music_bg.set_volume(0.1 )
         self.music_pre_bg.play()
         self.music_bg.play(-1,fade_ms=4000)
         
