@@ -69,22 +69,28 @@ class LevelScene(scene.Scene):
         self.play = []
 
     def handleEvent(self, event):
+        index = None
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
+            elif event.key in range(pygame.K_1,pygame.K_9 ):
+                index = event.key - pygame.K_1  
+
         elif self.playing and event.type == pygame.MOUSEBUTTONUP:
             index = self.buttons.click(event.pos)
 
-            if index:
-                self.play.append(index)
+        if index != None:
 
-                if not self.sequence.validate(self.play):
-                    self.game.director.change('gameover')
-                elif len(self.play) > self.count:
-                    self.game.director.endScene()
-                elif len(self.play) == self.seqindex:
-                    self.playing = False
-                    self.seqStart()
+            self.play.append(index)
+
+            if not self.sequence.validate(self.play):
+                self.game.director.change('gameover')
+            elif len(self.play) > self.count:
+                self.game.director.endScene()
+            elif len(self.play) == self.seqindex:
+                self.playing = False
+                self.seqStart()
 
     def update(self):
         self.sequence.update()
