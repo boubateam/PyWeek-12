@@ -1,6 +1,7 @@
 
 import pygame
 import random
+import data
 
 class Button(pygame.sprite.Sprite):
     '''The Button class.
@@ -8,7 +9,8 @@ class Button(pygame.sprite.Sprite):
 
     def __init__(self, name, size, position):
         pygame.sprite.Sprite.__init__(self)
-
+        
+        self.name = name
         self.image = pygame.Surface(size)
 
         self.rect = self.image.get_rect()
@@ -16,11 +18,18 @@ class Button(pygame.sprite.Sprite):
 
         self.active = False
 
+    def associateTheme(self,theme):
+        print('associate theme button-'+ str(1+self.name) + '.ogg')
+        self.sound = data.load_sound('button-'+ str(1+self.name) + '.ogg',theme)
+        self.sound.set_volume(0.4) 
+
     def update(self):
         if self.active:
             self.image.fill((0, 0, 255))
+            self.sound.play()
         else:
             self.image.fill((255, 0, 0))
+            self.sound.stop()
 
 class ButtonGroup(pygame.sprite.OrderedUpdates):
     '''Contains buttons.
@@ -40,7 +49,14 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
 
         self.animating = 0
         self.active = None
-
+    
+    def associateTheme(self,theme):
+        self.theme = theme
+         
+        for i in range(self.count):
+            button = self.get(i)
+            button.associateTheme(self.theme)
+        
     def get(self, index):
         buttons = self.sprites()
 
@@ -64,6 +80,7 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
     def animate(self, button):
         self.active = button
         self.animating = 40
+        
 
 class SequenceButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9):
@@ -78,6 +95,8 @@ class SequenceButtonGroup(ButtonGroup):
         self.seqDisplayRate = 20
         self.seqDisplayRateCounter = self.seqDisplayRate
 
+
+    
     def validate(self, play):
         for i in range(len(play)):
             if self.sequence[i] != play[i]:

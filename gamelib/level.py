@@ -26,9 +26,13 @@ class LevelScene(scene.Scene):
         self.music_bg = data.load_sound('background.ogg',name)
         self.music_pre_bg.play()
         self.music_bg.play(-1,fade_ms=4000)
+        
+        self.sequence.associateTheme(name) 
+        self.buttons.associateTheme(name) 
 
     def end(self):
-        self.music.fadeout(2000)
+        self.music_bg.fadeout(2000)
+        self.music_pre_bg.stop()
         super(LevelScene, self).end()
 
     def handleEvent(self, event):
