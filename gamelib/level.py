@@ -19,11 +19,11 @@ class LevelScene(scene.Scene):
         #self.sequence.play(1)
         self.playing = True
         self.play = []
-    
-    def start(self,name):
+
+    def start(self, name):
         super(LevelScene, self).start(name)
-        self.music_pre_bg = data.load_sound('pre-background.ogg',name)
-        self.music_bg = data.load_sound('background.ogg',name)
+        self.music_pre_bg = data.load_sound('pre-background.ogg', name)
+        self.music_bg = data.load_sound('background.ogg', name)
         self.music_pre_bg.play()
         self.music_bg.play(-1,fade_ms=4000)
         
@@ -40,7 +40,7 @@ class LevelScene(scene.Scene):
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
         elif self.playing and event.type == pygame.MOUSEBUTTONUP:
-            index = self.buttons.click(event)
+            index = self.buttons.click(event.pos)
 
             if index:
                 self.play.append(index)

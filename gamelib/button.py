@@ -88,8 +88,13 @@ class SequenceButtonGroup(ButtonGroup):
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
         print self.sequence
-        #clone so sequence can be used next to check if user clicks is the good result
-        self.popableSequence = self.sequence
+
+        # Clone so sequence can be used next to check if user clicks is the good
+        # result.
+        # Everything in Python is a pointer. If you assign one variable to
+        # another is like put a pointer to the original var. For cloning a list
+        # we get all it items.
+        self.popableSequence = self.sequence[:]
         self.prevPoppedIdx = None
         self.currentBtnIdx = None
         self.seqDisplayRate = 20
@@ -103,18 +108,19 @@ class SequenceButtonGroup(ButtonGroup):
                 return False
 
         return True
-        
+
     def notifySequencePlayed(self):
         print "sequence played"
         #todo what should be done now ?
-    
-    def changeButton(self):
 
+    def changeButton(self):
         try:
             self.currentBtnIdx = self.popableSequence.pop(0)
         except IndexError:
             self.notifySequencePlayed()
 
+        # I've made a method to get a button by index:
+        # button = self.get(self.currentBtnIdx)
         buttons = self.sprites()
 
         try:
@@ -123,29 +129,28 @@ class SequenceButtonGroup(ButtonGroup):
                 buttons[self.prevPoppedIdx].active = False 
         except IndexError:
             pass
-        
+
         self.prevPoppedIdx = self.currentBtnIdx
 
     def update(self):
-        
         if  self.seqDisplayRateCounter == 0:
             self.changeButton()
             self.seqDisplayRateCounter = self.seqDisplayRate    
         else:
             self.seqDisplayRateCounter -= 1
-        
+
         ButtonGroup.update(self)
 
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9):
         ButtonGroup.__init__(self, size, position, space, count)
 
-    def click(self, event):
+    def click(self, pos):
         if self.animating == 0: # One button a la fois
             for index in range(self.count):
                 button = self.get(index)
 
-                if button.rect.collidepoint(event.pos):
+                if button.rect.collidepoint(pos):
                     self.animate(button)
                     return index
 
