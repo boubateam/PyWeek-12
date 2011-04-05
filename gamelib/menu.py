@@ -120,6 +120,10 @@ class PauseMenuScene(MenuScene):
                  ('Back to Menu', self.back))
 
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
+        self.music_bg = data.load_sound('pause.ogg')
+
+    def start(self):
+        self.music_bg.play()
 
     def cont(self):
         self.game.director.endScene()

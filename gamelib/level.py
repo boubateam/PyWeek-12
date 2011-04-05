@@ -57,9 +57,6 @@ class LevelScene(scene.Scene):
             self.pre_bg_channel.pause()
         if self.bg_channel != None :
             self.bg_channel.pause()    
-        
-
-
 
     def seqStart(self):
         self.seqindex += 1
