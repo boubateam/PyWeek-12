@@ -18,7 +18,7 @@ class Game(object):
         self.level  = None
         self.difficulty = 4
         self.points = 0
-        self.director = director.Director({
+        self.director = director.Director(self, {
             'title' : 'PyGame',
             'show_fps' : True})
 
@@ -31,9 +31,9 @@ class Game(object):
         self.director.end()
 
     def initLevels(self):
-        self.director.register('intro', IntroScene(self))
-        self.director.register('menu', MainMenuScene(self))
-        self.director.register('alien-meeting', LevelScene(self))
-        self.director.register('credits', CreditsScene(self))
-        self.director.register('gameover', GameOverScene(self))
-        self.director.register('pause', PauseMenuScene(self))
+        self.director.register('intro', IntroScene)
+        self.director.register('menu', MainMenuScene)
+        self.director.register('alien-meeting', LevelScene)
+        self.director.register('credits', CreditsScene)
+        self.director.register('gameover', GameOverScene)
+        self.director.register('pause', PauseMenuScene)

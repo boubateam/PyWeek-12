@@ -6,8 +6,8 @@ import scene
 import data
 
 class CreditsScene(scene.Scene):
-    def __init__(self, game):
-        super(CreditsScene, self).__init__(game)
+    def __init__(self, game, name, index):
+        super(CreditsScene, self).__init__(game, name, index)
 
         self.text = data.render_text(None, 37, 'Bouba Team', (255, 255, 255))
         self.textrect = self.text.get_rect()

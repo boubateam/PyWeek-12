@@ -7,12 +7,13 @@ class Scene(object):
 
     name = ''
 
-    def __init__(self, game):
+    def __init__(self, game, name, index):
         self.game = game
-       
-    def start(self,name):
         self.name = name
-        print('start ' + self.name)
+        self.index = index
+
+    def start(self):
+        pass
 
     def end(self):
         pass

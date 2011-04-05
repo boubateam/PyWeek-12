@@ -17,11 +17,11 @@ class Director(object):
         'framerate' : 40,
         'show_fps' : False}
 
-    def __init__(self, config=None):
+    def __init__(self, game, config=None):
+        self.game = game
+
         self.config = {}
         self.config.update(self.defaults)
-
-        self.delay = 0
 
         if config:
             self.config.update(config)
@@ -43,11 +43,11 @@ class Director(object):
         self.scene = None
         self.scenes = []
 
-    def register(self, name, instance):
-        if not isinstance(instance, scene.Scene):
+    def register(self, name, klass):
+        if not issubclass(klass, scene.Scene):
             raise TypeError('Class passed is not a Scene')
 
-        self.scenes.append((name, instance))
+        self.scenes.append([name, klass, None])
 
     def change(self, name):
         if self.scene:
@@ -62,9 +62,12 @@ class Director(object):
         if index == None:
             raise KeyError('Scene %s not found' % (name, ))
 
+        if self.scenes[index][2] == None:
+            self.scenes[index][2] = self.scenes[index][1](self.game, name, index)
+
         self.index = index
-        self.scene = self.scenes[index][1]
-        self.scene.start(name)
+        self.scene = self.scenes[index][2]
+        self.scene.start()
 
     def changeAndBack(self, name):
         self.forceIndex = self.index

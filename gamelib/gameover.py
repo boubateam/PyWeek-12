@@ -6,8 +6,8 @@ import scene
 import data
 
 class GameOverScene(scene.Scene):
-    def __init__(self, game):
-        super(GameOverScene, self).__init__(game)
+    def __init__(self, game, name, index):
+        super(GameOverScene, self).__init__(game, name, index)
 
         self.text = data.render_text(None, 37, 'Game Over', (255, 255, 255))
         self.textrect = self.text.get_rect()

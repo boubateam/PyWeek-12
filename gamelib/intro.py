@@ -8,21 +8,20 @@ import scene
 import data
 
 class IntroScene(scene.Scene):
-    def __init__(self, game):
-        super(IntroScene, self).__init__(game)
+    def __init__(self, game, name, index):
+        super(IntroScene, self).__init__(game, name, index)
 
         self.text = data.render_text('LiberationSans-Regular.ttf', 37, 'Welcome to Garfunkel', (255, 255, 255))
         self.textrect = self.text.get_rect()
-        self.background = data.load_image('intro.png')
 
-    def start(self,name):
-        super(IntroScene, self).start(name)
+        self.background = data.load_image('intro.png')
         self.music = data.load_sound('intro.ogg')
+
+    def start(self):
         self.music.play(-1,fade_ms=4000)
 
     def end(self):
         self.music.fadeout(2000)
-        super(IntroScene, self).end()
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
