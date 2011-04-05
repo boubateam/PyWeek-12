@@ -13,6 +13,11 @@ class GameOverScene(scene.Scene):
         self.textrect = self.text.get_rect()
         self.background = data.load_image('gameover.png')
 
+        self.music_bg = data.load_sound('gameover.ogg')
+    
+    def start(self):
+        self.music_bg.play()
+        
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONUP:
             self.game.end()

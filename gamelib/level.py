@@ -34,14 +34,29 @@ class LevelScene(scene.Scene):
 
         self.sequence.associateTheme(self.name) 
         self.buttons.associateTheme(self.name)
+        
+        self.pre_bg_channel = None
+        self.bg_channel = None
+        
 
     def start(self):
-        self.music_pre_bg.play()
-        self.music_bg.play(-1, fade_ms=4000) 
+        if self.pre_bg_channel == None :
+            self.pre_bg_channel = self.music_pre_bg.play()
+        else:
+            self.pre_bg_channel.unpause()
+        
+        if self.bg_channel == None :
+            self.bg_channel =  self.music_bg.play(-1, fade_ms=4000)
+        else:
+            self.bg_channel.unpause()
 
     def end(self):
-        self.music_bg.fadeout(2000)
-        self.music_pre_bg.stop()
+        if self.pre_bg_channel != None :
+            self.pre_bg_channel.pause()
+        if self.bg_channel != None :
+            self.bg_channel.pause()    
+        
+
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
