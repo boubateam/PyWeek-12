@@ -93,14 +93,15 @@ class SequenceButtonGroup(ButtonGroup):
     def notifySequencePlayed(self):
         print "sequence played"
         #todo what should be done now ?
-    
-    def changeButton(self):
 
+    def changeButton(self):
         try:
             self.currentBtnIdx = self.popableSequence.pop(0)
         except IndexError:
             self.notifySequencePlayed()
 
+        # I've made a method to get a button by index:
+        # button = self.get(self.currentBtnIdx)
         buttons = self.sprites()
 
         try:
@@ -109,17 +110,16 @@ class SequenceButtonGroup(ButtonGroup):
                 buttons[self.prevPoppedIdx].active = False 
         except IndexError:
             pass
-        
+
         self.prevPoppedIdx = self.currentBtnIdx
 
     def update(self):
-        
         if  self.seqDisplayRateCounter == 0:
             self.changeButton()
             self.seqDisplayRateCounter = self.seqDisplayRate    
         else:
             self.seqDisplayRateCounter -= 1
-        
+
         ButtonGroup.update(self)
 
 class PlayableButtonGroup(ButtonGroup):
