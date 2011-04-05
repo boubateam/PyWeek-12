@@ -17,6 +17,8 @@ class LevelScene(scene.Scene):
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15)
 
         #self.sequence.play(1)
+        self.running = False
+
         self.playing = True
         self.play = []
 
