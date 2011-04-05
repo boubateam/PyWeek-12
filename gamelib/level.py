@@ -28,7 +28,7 @@ class LevelScene(scene.Scene):
         self.music_bg.play(-1,fade_ms=4000)
 
     def end(self):
-        self.music.fadeout(2000)
+        self.music_bg.fadeout(2000)
         super(LevelScene, self).end()
 
     def handleEvent(self, event):
@@ -36,7 +36,7 @@ class LevelScene(scene.Scene):
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
         elif self.playing and event.type == pygame.MOUSEBUTTONUP:
-            index = self.buttons.click(event)
+            index = self.buttons.click(event.pos)
 
             if index:
                 self.play.append(index)
