@@ -33,7 +33,7 @@ class Game(object):
     def initLevels(self):
         self.director.register('intro', IntroScene)
         self.director.register('menu', MainMenuScene)
-        self.director.register('alien-meeting', LevelScene)
+        self.director.register('alien-meeting', LevelScene, { 'config': 9 })
         self.director.register('credits', CreditsScene)
         self.director.register('gameover', GameOverScene)
         self.director.register('pause', PauseMenuScene)

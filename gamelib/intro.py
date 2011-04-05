@@ -8,8 +8,8 @@ import scene
 import data
 
 class IntroScene(scene.Scene):
-    def __init__(self, game, name, index):
-        super(IntroScene, self).__init__(game, name, index)
+    def __init__(self, game, name, index, config=None):
+        super(IntroScene, self).__init__(game, name, index, config)
 
         self.text = data.render_text('LiberationSans-Regular.ttf', 37, 'Welcome to Garfunkel', (255, 255, 255))
         self.textrect = self.text.get_rect()

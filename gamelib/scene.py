@@ -7,10 +7,11 @@ class Scene(object):
 
     name = ''
 
-    def __init__(self, game, name, index):
+    def __init__(self, game, name, index, config=None):
         self.game = game
         self.name = name
         self.index = index
+        self.config = config
 
     def start(self):
         pass

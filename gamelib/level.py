@@ -10,10 +10,13 @@ class LevelScene(scene.Scene):
     '''Is the basic level.
     '''
 
-    def __init__(self, game, name, index):
-        super(LevelScene, self).__init__(game, name, index)
+    def __init__(self, game, name, index, config=None):
+        super(LevelScene, self).__init__(game, name, index, config)
 
-        self.count = 9
+        if config and 'count' in config:
+            self.count = config['count']
+        else:
+            self.count = 9
 
         self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 5, self.count)
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15, self.count)

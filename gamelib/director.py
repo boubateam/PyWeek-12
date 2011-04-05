@@ -43,13 +43,13 @@ class Director(object):
         self.scene = None
         self.scenes = []
 
-    def register(self, name, klass):
+    def register(self, name, klass, config=None):
         if not issubclass(klass, scene.Scene):
             raise TypeError('Class passed is not a Scene')
 
-        self.scenes.append([name, klass, None])
+        self.scenes.append([name, klass, None, config])
 
-    def change(self, name):
+    def change(self, name, reinit=False):
         if self.scene:
             self.scene.end()
 
@@ -62,11 +62,13 @@ class Director(object):
         if index == None:
             raise KeyError('Scene %s not found' % (name, ))
 
-        if self.scenes[index][2] == None:
-            self.scenes[index][2] = self.scenes[index][1](self.game, name, index)
+        scene = self.scenes[index]
+
+        if scene[2] == None or reinit:
+            scene[2] = scene[1](self.game, name, index, scene[3])
 
         self.index = index
-        self.scene = self.scenes[index][2]
+        self.scene = scene[2]
         self.scene.start()
 
     def changeAndBack(self, name):
