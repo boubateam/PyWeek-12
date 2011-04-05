@@ -24,6 +24,8 @@ class CreditsScene(scene.Scene):
 
             self.names.append((rend, rect))
 
+        self.background = data.load_image('credits.png')
+
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -41,6 +43,7 @@ class CreditsScene(scene.Scene):
             y += value[1].height * 1.5
 
     def draw(self, screen):
+        screen.blit(self.background, (0, 0))
         screen.blit(self.text, self.textrect)
 
         for rend, rect in self.names:

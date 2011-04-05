@@ -47,16 +47,16 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
 
         self.count = count
 
-        self.animating = 0
+        self.animating = False
+        self.animTime = 0
         self.active = None
-    
-    def associateTheme(self,theme):
+
+    def associateTheme(self, theme):
         self.theme = theme
-         
-        for i in range(self.count):
-            button = self.get(i)
+
+        for button in self:
             button.associateTheme(self.theme)
-        
+
     def get(self, index):
         buttons = self.sprites()
 
@@ -66,21 +66,20 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
             return None
 
     def update(self):
-        if not self.active:
-            self.animating = 0
-        elif self.animating == 0:
-            self.active.active = False
-            self.active = None
-        else:
-            self.active.active = True
-            self.animating -= 1
+        if self.animating:
+            if pygame.time.get_ticks() > self.animTime:
+                self.animating = False
+                self.animTime = 0
+                self.active.active = False
+                self.active = None
 
         pygame.sprite.OrderedUpdates.update(self)
 
     def animate(self, button):
+        self.animating = True
+        self.animTime = pygame.time.get_ticks() + 750
         self.active = button
-        self.animating = 40
-        
+        self.active.active = True
 
 class SequenceButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9):
@@ -100,8 +99,6 @@ class SequenceButtonGroup(ButtonGroup):
         self.seqDisplayRate = 20
         self.seqDisplayRateCounter = self.seqDisplayRate
 
-
-    
     def validate(self, play):
         for i in range(len(play)):
             if self.sequence[i] != play[i]:
@@ -135,7 +132,7 @@ class SequenceButtonGroup(ButtonGroup):
     def update(self):
         if  self.seqDisplayRateCounter == 0:
             self.changeButton()
-            self.seqDisplayRateCounter = self.seqDisplayRate    
+            self.seqDisplayRateCounter = self.seqDisplayRate
         else:
             self.seqDisplayRateCounter -= 1
 
@@ -146,7 +143,7 @@ class PlayableButtonGroup(ButtonGroup):
         ButtonGroup.__init__(self, size, position, space, count)
 
     def click(self, pos):
-        if self.animating == 0: # One button a la fois
+        if not self.animating: # One button a la fois
             for index in range(self.count):
                 button = self.get(index)
 
