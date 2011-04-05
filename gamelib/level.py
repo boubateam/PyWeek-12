@@ -21,16 +21,21 @@ class LevelScene(scene.Scene):
         self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 5, self.count)
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15, self.count)
 
-        self.sequence.play(1, self.playEnd)
-        self.sequencing = True
+        self.seqindex = 0
+        self.sequencing = False
+
+        self.play = []
+        self.playing = False
 
         self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
         self.music_bg = data.load_sound('background.ogg', self.name)
-        self.music_pre_bg.set_volume(0.5)
-        self.music_bg.set_volume(0.5)
+        self.music_pre_bg.set_volume(0.3)
+        self.music_bg.set_volume(0.3)
 
         self.sequence.associateTheme(self.name) 
         self.buttons.associateTheme(self.name)
+
+        self.seqStart()
 
     def start(self):
         self.music_pre_bg.play()
@@ -40,23 +45,33 @@ class LevelScene(scene.Scene):
         self.music_bg.fadeout(2000)
         self.music_pre_bg.stop()
 
-    def playEnd(self):
+    def seqStart(self):
+        self.seqindex += 1
+        self.sequence.play(self.seqindex, self.seqEnd)
+        self.sequencing = True
+
+    def seqEnd(self):
         self.sequencing = False
+        self.playing = True
+        self.play = []
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
-#        elif self.playing and event.type == pygame.MOUSEBUTTONUP:
-#            index = self.buttons.click(event.pos)
-#
-#            if index:
-#                self.play.append(index)
-#
-#                if not self.sequence.validate(index):
-#                    self.game.director.change('gameover')
-#                elif len(self.play) > self.count:
-#                    self.game.director.endScene()
+        elif self.playing and event.type == pygame.MOUSEBUTTONUP:
+            index = self.buttons.click(event.pos)
+
+            if index:
+                self.play.append(index)
+
+                if not self.sequence.validate(self.play):
+                    self.game.director.change('gameover')
+                elif len(self.play) > self.count:
+                    self.game.director.endScene()
+                elif len(self.play) == self.seqindex:
+                    self.playing = False
+                    self.seqStart()
 
     def update(self):
         self.sequence.update()

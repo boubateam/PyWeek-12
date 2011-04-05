@@ -100,8 +100,12 @@ class SequenceButtonGroup(ButtonGroup):
         self.animateCallback = callback
         self.animateNext()
 
-    def validate(self, index):
-        return False
+    def validate(self, play):
+        for i in range(len(play)):
+            if self.sequence[i] != play[i]:
+                return False
+
+        return True
 
     def update(self):
         ButtonGroup.update(self)
