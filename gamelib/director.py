@@ -49,8 +49,8 @@ class Director(object):
     def register(self, name, klass, config=None):
         if not issubclass(klass, scene.Scene):
             raise TypeError('Class passed is not a Scene')
-        if issubclass(klass, LevelScene):
-            self.scenes.append([name + 'pre level', PreLevelScene, None, config])
+        #if issubclass(klass, LevelScene):
+        #    self.scenes.append([name + 'pre level', PreLevelScene, None, config])
         self.scenes.append([name, klass, None, config])
 
     def change(self, name, reinit=False):
