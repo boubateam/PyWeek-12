@@ -181,5 +181,12 @@ class PlayableButtonGroup(ButtonGroup):
 
         return None
 
+    def push(self,index):
+        if not self.animating:
+            button = self.get(index)
+            self.animate(button)
+            return index
+        return None
+        
     def update(self):
         ButtonGroup.update(self)

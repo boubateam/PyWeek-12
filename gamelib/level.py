@@ -76,7 +76,8 @@ class LevelScene(scene.Scene):
                 self.game.director.changeAndBack('pause')
             elif event.key in range(pygame.K_1,pygame.K_9 ):
                 index = event.key - pygame.K_1  
-
+                index = self.buttons.push(index)
+                
         elif self.playing and event.type == pygame.MOUSEBUTTONUP:
             index = self.buttons.click(event.pos)
 
