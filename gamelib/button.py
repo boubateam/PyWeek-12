@@ -51,6 +51,9 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.animDelta = delta
         self.active = None
 
+        self.wait = False
+        self.waitTime = 0
+
     def associateTheme(self, theme):
         self.theme = theme
 
@@ -68,13 +71,27 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         return None
 
     def update(self):
-        if self.animating:
-            if pygame.time.get_ticks() > self.animTime:
-                self.animating = False
-                self.animTime = 0
-                self.animateEnd()
+        if self.animating and  pygame.time.get_ticks() > self.animTime:
+            self.animating = False
+            self.animTime = 0
+            self.animateEnd()
+
+        if self.wait and pygame.time.get_ticks() > self.waitTime:
+            self.waitEnd()
+            self.waitExec()
 
         pygame.sprite.OrderedUpdates.update(self)
+
+    def waitStart(self):
+        self.wait = True
+        self.waitTime = pygame.time.get_ticks() + self.animDelta
+
+    def waitEnd(self):
+        self.wait = False
+        self.waitTime = 0
+
+    def waitExec(self):
+        pass
 
     def animate(self, button):
         self.animating = True
@@ -96,8 +113,13 @@ class SequenceButtonGroup(ButtonGroup):
         self.animateCallback = None
 
     def play(self, number, callback):
+        print number
         self.animateSequence = self.sequence[:number]
         self.animateCallback = callback
+
+        self.waitStart()
+
+    def waitExec(self):
         self.animateNext()
 
     def validate(self, play):
@@ -126,6 +148,8 @@ class SequenceButtonGroup(ButtonGroup):
 
     def animateEnd(self):
         ButtonGroup.animateEnd(self)
+
+        #self.waitStart()
         self.animateNext()
 
 class PlayableButtonGroup(ButtonGroup):
