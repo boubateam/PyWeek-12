@@ -23,10 +23,13 @@ def load(filename, mode='rb'):
     '''
     return open(os.path.join(data_dir, filename), mode)
 
-def load_image(filename):
+def load_image(filename, theme=''):
     '''Return a loaded image.
     '''
-    return pygame.image.load(filepath(filename)).convert()
+    if theme == '':
+        return pygame.image.load(filepath(filename)).convert()
+    else:
+        return pygame.image.load(filepath(os.path.join('themes', theme, filename))).convert()
 
 def load_font(name, size):
     filename = None

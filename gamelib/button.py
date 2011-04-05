@@ -9,7 +9,7 @@ class Button(pygame.sprite.Sprite):
 
     def __init__(self, name, size, position):
         pygame.sprite.Sprite.__init__(self)
-        
+
         self.name = name
         self.image = pygame.Surface(size)
 
@@ -18,9 +18,8 @@ class Button(pygame.sprite.Sprite):
 
         self.active = False
 
-    def associateTheme(self,theme):
-        print('associate theme button-'+ str(1+self.name) + '.ogg')
-        self.sound = data.load_sound('button-'+ str(1+self.name) + '.ogg',theme)
+    def associateTheme(self, theme):
+        self.sound = data.load_sound('button-' + str(1+self.name) + '.ogg', theme)
         self.sound.set_volume(0.4) 
 
     def update(self):
@@ -35,7 +34,7 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
     '''Contains buttons.
     '''
 
-    def __init__(self, size, position, space, count=9):
+    def __init__(self, size, position, space, count=9, delta=750):
         pygame.sprite.OrderedUpdates.__init__(self)
 
         x = position[0]
@@ -49,7 +48,11 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
 
         self.animating = False
         self.animTime = 0
+        self.animDelta = delta
         self.active = None
+
+        self.wait = False
+        self.waitTime = 0
 
     def associateTheme(self, theme):
         self.theme = theme
@@ -58,102 +61,103 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
             button.associateTheme(self.theme)
 
     def get(self, index):
-        buttons = self.sprites()
+        i = 0
 
-        try:
-            return buttons[index]
-        except IndexError:
-            return None
+        for button in self:
+            if i == index:
+                return button
+            i += 1
+
+        return None
 
     def update(self):
-        if self.animating:
-            if pygame.time.get_ticks() > self.animTime:
-                self.animating = False
-                self.animTime = 0
-                self.active.active = False
-                self.active = None
+        if self.animating and  pygame.time.get_ticks() > self.animTime:
+            self.animating = False
+            self.animTime = 0
+            self.animateEnd()
+
+        if self.wait and pygame.time.get_ticks() > self.waitTime:
+            self.waitEnd()
+            self.waitExec()
 
         pygame.sprite.OrderedUpdates.update(self)
 
+    def waitStart(self):
+        self.wait = True
+        self.waitTime = pygame.time.get_ticks() + self.animDelta
+
+    def waitEnd(self):
+        self.wait = False
+        self.waitTime = 0
+
+    def waitExec(self):
+        pass
+
     def animate(self, button):
         self.animating = True
-        self.animTime = pygame.time.get_ticks() + 750
+        self.animTime = pygame.time.get_ticks() + self.animDelta
         self.active = button
         self.active.active = True
 
+    def animateEnd(self):
+        self.active.active = False
+        self.active = None
+
 class SequenceButtonGroup(ButtonGroup):
-    def __init__(self, size, position, space, count=9):
-        ButtonGroup.__init__(self, size, position, space, count)
+    def __init__(self, size, position, space, count=9, delta=750):
+        ButtonGroup.__init__(self, size, position, space, count, delta)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
-        print "sequence is "
-        print self.sequence
 
-        self.popableSequence = self.sequence[:]
-        self.userValidatingSeq = self.sequence[:]        
-        self.prevPoppedIdx = None
-        self.currentBtnIdx = None
-        self.seqDisplayTimeRate = 1000
-        self.seqDisplayRateCounter = 0
-        self.playing = True
-        self.buttons = self.sprites()
+        self.animateSequence = []
+        self.animateCallback = None
 
-    def validate(self, clickedBtnIdx):
-        
-        if self.userValidatingSeq.pop(0) == clickedBtnIdx :
-            return True
-        else:
-            return False
+    def play(self, number, callback):
+        print number
+        self.animateSequence = self.sequence[:number]
+        self.animateCallback = callback
 
-    def notifySequencePlayed(self):
-        print "sequence played"
-        self.playing = False
-        #todo what should be done now ?
+        self.waitStart()
 
-    def changeButton(self):
-        
-        try:
-            self.currentBtnIdx = self.popableSequence.pop(0)
-        except IndexError:
-            self.buttons[self.prevPoppedIdx].active = False 
-            self.notifySequencePlayed()
-            return
+    def waitExec(self):
+        self.animateNext()
 
-        print "playing button "+str(self.currentBtnIdx), "prev idx =", str(self.prevPoppedIdx)
-        
-        #Etrangement, le code suivant ne fonctionne pas (button semble etre une copie au lieu d'une ref)
-        '''        
-button = self.get(self.currentBtnIdx)
-        button.active = True
-        
-        if not self.prevPoppedIdx == None:
-            button.active = False 
-            '''
-        try:
-            if not self.prevPoppedIdx == None:
-                self.buttons[self.prevPoppedIdx].active = False 
-            
-            self.buttons[self.currentBtnIdx].active = True     
-        except IndexError:
-            pass
+    def validate(self, play):
+        for i in range(len(play)):
+            if self.sequence[i] != play[i]:
+                return False
 
-
-        self.prevPoppedIdx = self.currentBtnIdx
+        return True
 
     def update(self):
-        if  self.playing and pygame.time.get_ticks() > self.seqDisplayRateCounter:
-            self.changeButton()
-            self.seqDisplayRateCounter = pygame.time.get_ticks() + self.seqDisplayTimeRate
-            
-            
         ButtonGroup.update(self)
 
+    def animateNext(self):
+        if len(self.animateSequence) > 0:
+            index = self.animateSequence.pop(0)
+            button = self.get(index)
+
+            if button:
+                self.animate(button)
+            else:
+                raise IndexError('Button %d not found' % (index, ))
+        else:
+            self.animateCallback()
+            self.animateCallback = None
+            self.animateSequence = []
+
+    def animateEnd(self):
+        ButtonGroup.animateEnd(self)
+
+        #self.waitStart()
+        self.animateNext()
+
 class PlayableButtonGroup(ButtonGroup):
-    def __init__(self, size, position, space, count=9):
-        ButtonGroup.__init__(self, size, position, space, count)
+    def __init__(self, size, position, space, count=9, delta=750):
+        ButtonGroup.__init__(self, size, position, space, count, delta)
 
     def click(self, pos):
-        if not self.animating: # One button a la fois
+        if not self.animating:
             for index in range(self.count):
                 button = self.get(index)
 
