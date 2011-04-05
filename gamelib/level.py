@@ -21,11 +21,8 @@ class LevelScene(scene.Scene):
         self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 5, self.count)
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15, self.count)
 
-        #self.sequence.play(1)
-        self.running = False
-
-        self.playing = True
-        self.play = []
+        self.sequence.play(1, self.playEnd)
+        self.sequencing = True
 
         self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
         self.music_bg = data.load_sound('background.ogg', self.name)
@@ -43,20 +40,23 @@ class LevelScene(scene.Scene):
         self.music_bg.fadeout(2000)
         self.music_pre_bg.stop()
 
+    def playEnd(self):
+        self.sequencing = False
+
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
-        elif self.playing and event.type == pygame.MOUSEBUTTONUP:
-            index = self.buttons.click(event.pos)
-
-            if index:
-                self.play.append(index)
-
-                if not self.sequence.validate(index):
-                    self.game.director.change('gameover')
-                elif len(self.play) > self.count:
-                    self.game.director.endScene()
+#        elif self.playing and event.type == pygame.MOUSEBUTTONUP:
+#            index = self.buttons.click(event.pos)
+#
+#            if index:
+#                self.play.append(index)
+#
+#                if not self.sequence.validate(index):
+#                    self.game.director.change('gameover')
+#                elif len(self.play) > self.count:
+#                    self.game.director.endScene()
 
     def update(self):
         self.sequence.update()
