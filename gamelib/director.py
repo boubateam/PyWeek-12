@@ -83,7 +83,7 @@ class Director(object):
                 else:
                     self.scene.handleEvent(event)
 
-            self.screen.fill((0, 0, 0))
+            #self.screen.fill((0, 0, 0))
 
             self.scene.update()
             self.scene.draw(self.screen)

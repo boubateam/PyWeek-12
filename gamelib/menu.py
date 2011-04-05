@@ -58,13 +58,11 @@ class MenuScene(scene.Scene):
     '''Menu Scene
     '''
 
-    def __init__(self, game, size, menus, bg='menu.png'):
+    def __init__(self, game, size, menus):
         scene.Scene.__init__(self, game)
 
         self.menu = Menu(size, menus)
         self.menurect = self.menu.get_rect()
-
-        self.background = data.load_image(bg)
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -82,7 +80,6 @@ class MenuScene(scene.Scene):
         self.menurect.centerx = screen.get_rect().centerx
         self.menurect.centery = screen.get_rect().centery
 
-        screen.blit(self.background, (0, 0))
         screen.blit(self.menu, self.menurect)
 
 class MainMenuScene(MenuScene):
@@ -90,6 +87,8 @@ class MainMenuScene(MenuScene):
     '''
 
     def __init__(self, game):
+        self.background = data.load_image('menu.png')
+
         menus = (('Start Game', self.play),
                  ('Credits', self.credits),
                  ('Exit', self.exit))
@@ -105,11 +104,18 @@ class MainMenuScene(MenuScene):
     def exit(self):
         self.game.end()
 
+    def draw(self, screen):
+        screen.blit(self.background, (0, 0))
+        super(MainMenuScene, self).draw(screen)
+
 class PauseMenuScene(MenuScene):
     '''Pause Menu
     '''
 
     def __init__(self, game):
+        self.background = pygame.surface.Surface((640, 480), flags=pygame.SRCALPHA)
+        self.background.fill((90, 90, 90, 5))
+
         menus = (('Resume', self.cont),
                  ('Back to Menu', self.back))
 
@@ -120,3 +126,7 @@ class PauseMenuScene(MenuScene):
 
     def back(self):
         self.game.director.change('menu')
+
+    def draw(self, screen):
+        screen.blit(self.background, (0, 0))
+        super(PauseMenuScene, self).draw(screen)

@@ -132,7 +132,7 @@ class SequenceButtonGroup(ButtonGroup):
     def update(self):
         if  self.seqDisplayRateCounter == 0:
             self.changeButton()
-            self.seqDisplayRateCounter = self.seqDisplayRate    
+            self.seqDisplayRateCounter = self.seqDisplayRate
         else:
             self.seqDisplayRateCounter -= 1
 
