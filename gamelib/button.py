@@ -86,56 +86,66 @@ class SequenceButtonGroup(ButtonGroup):
         ButtonGroup.__init__(self, size, position, space, count)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
+        print "sequence is "
         print self.sequence
 
-        # Clone so sequence can be used next to check if user clicks is the good
-        # result.
-        # Everything in Python is a pointer. If you assign one variable to
-        # another is like put a pointer to the original var. For cloning a list
-        # we get all it items.
         self.popableSequence = self.sequence[:]
+        self.userValidatingSeq = self.sequence[:]        
         self.prevPoppedIdx = None
         self.currentBtnIdx = None
-        self.seqDisplayRate = 20
-        self.seqDisplayRateCounter = self.seqDisplayRate
+        self.seqDisplayTimeRate = 1000
+        self.seqDisplayRateCounter = 0
+        self.playing = True
+        self.buttons = self.sprites()
 
-    def validate(self, play):
-        for i in range(len(play)):
-            if self.sequence[i] != play[i]:
-                return False
-
-        return True
+    def validate(self, clickedBtnIdx):
+        
+        if self.userValidatingSeq.pop(0) == clickedBtnIdx :
+            return True
+        else:
+            return False
 
     def notifySequencePlayed(self):
         print "sequence played"
+        self.playing = False
         #todo what should be done now ?
 
     def changeButton(self):
+        
         try:
             self.currentBtnIdx = self.popableSequence.pop(0)
         except IndexError:
+            self.buttons[self.prevPoppedIdx].active = False 
             self.notifySequencePlayed()
+            return
 
-        # I've made a method to get a button by index:
-        # button = self.get(self.currentBtnIdx)
-        buttons = self.sprites()
-
+        print "playing button "+str(self.currentBtnIdx), "prev idx =", str(self.prevPoppedIdx)
+        
+        #Etrangement, le code suivant ne fonctionne pas (button semble etre une copie au lieu d'une ref)
+        '''        
+button = self.get(self.currentBtnIdx)
+        button.active = True
+        
+        if not self.prevPoppedIdx == None:
+            button.active = False 
+            '''
         try:
-            buttons[self.currentBtnIdx].active = True  
             if not self.prevPoppedIdx == None:
-                buttons[self.prevPoppedIdx].active = False 
+                self.buttons[self.prevPoppedIdx].active = False 
+            
+            self.buttons[self.currentBtnIdx].active = True     
         except IndexError:
             pass
+
 
         self.prevPoppedIdx = self.currentBtnIdx
 
     def update(self):
-        if  self.seqDisplayRateCounter == 0:
+        if  self.playing and pygame.time.get_ticks() > self.seqDisplayRateCounter:
             self.changeButton()
-            self.seqDisplayRateCounter = self.seqDisplayRate
-        else:
-            self.seqDisplayRateCounter -= 1
-
+            self.seqDisplayRateCounter = pygame.time.get_ticks() + self.seqDisplayTimeRate
+            
+            
         ButtonGroup.update(self)
 
 class PlayableButtonGroup(ButtonGroup):

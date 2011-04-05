@@ -53,7 +53,7 @@ class LevelScene(scene.Scene):
             if index:
                 self.play.append(index)
 
-                if not self.sequence.validate(self.play):
+                if not self.sequence.validate(index):
                     self.game.director.change('gameover')
                 elif len(self.play) > self.count:
                     self.game.director.endScene()
