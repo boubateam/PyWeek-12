@@ -39,7 +39,14 @@ class LevelScene(scene.Scene):
         self.bg_channel = None
 
         self.seqStart()
-
+        #step counter management
+        self.stepElapsingInTime = 1000
+        self.stepElapsedTimeCounter = 0
+        self.counterStepPerClick = 5
+        self.currentCounterStep = self.counterStepPerClick
+        #counting only when button animation is over
+        self.stepCountElapsingTime = False
+        
     def start(self):
         if self.pre_bg_channel == None :
             self.pre_bg_channel = self.music_pre_bg.play()
@@ -61,12 +68,14 @@ class LevelScene(scene.Scene):
         self.seqindex += 1
         self.sequence.play(self.seqindex, self.seqEnd)
         self.sequencing = True
-
+        self.stepCountElapsingTime = False
+        
     def seqEnd(self):
         self.sequencing = False
         self.playing = True
         self.play = []
-
+        self.stepCountElapsingTime = True
+        
     def handleEvent(self, event):
         index = None
 
@@ -82,6 +91,7 @@ class LevelScene(scene.Scene):
 
             if index != None:
                 self.play.append(index)
+                self.currentCounterStep = self.counterStepPerClick
 
                 if not self.sequence.validate(self.play):
                     self.game.director.change('gameover')
@@ -94,7 +104,16 @@ class LevelScene(scene.Scene):
     def update(self):
         self.sequence.update()
         self.buttons.update()
-
+        
+        if self.stepCountElapsingTime:
+            print "step counter is "+str(self.currentCounterStep)
+            if pygame.time.get_ticks() > self.stepElapsedTimeCounter :
+                self.currentCounterStep -=1
+                self.stepElapsedTimeCounter = pygame.time.get_ticks()+self.stepElapsingInTime 
+            
+            if self.currentCounterStep < 0:
+                self.game.director.change('gameover')
+                
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
 
