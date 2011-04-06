@@ -70,7 +70,7 @@ class MenuScene(scene.Scene):
                 self.menu.prev()
             elif event.key == pygame.K_DOWN:
                 self.menu.next()
-            elif event.key == pygame.K_RETURN:
+            elif event.key in [ pygame.K_RETURN, pygame.K_SPACE]:
                 self.menu.execute()
 
     def update(self):
@@ -96,7 +96,6 @@ class MainMenuScene(MenuScene):
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
 
     def play(self):
-        self.game.points = 0
         self.game.director.endScene(True)
 
     def credits(self):
