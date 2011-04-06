@@ -87,7 +87,7 @@ class LevelScene(scene.Scene):
                     self.game.director.change('gameover')
                 elif len(self.play) > self.count:
                     self.game.director.endScene(True)
-                elif len(self.play) == self.seqindex:
+                elif len(self.play) == self.seqindex + 1:
                     self.playing = False
                     self.seqStart()
 
