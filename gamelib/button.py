@@ -146,7 +146,6 @@ class SequenceButtonGroup(ButtonGroup):
     def play(self, number, callback):
         self.animateSequence = self.sequence[:number]
         self.animateCallback = callback
-
         self.waitStart()
 
     def waitExec(self):
@@ -156,7 +155,6 @@ class SequenceButtonGroup(ButtonGroup):
         for i in range(len(play)):
             if self.sequence[i] != play[i]:
                 return False
-
         return True
 
     def update(self):
@@ -174,9 +172,7 @@ class SequenceButtonGroup(ButtonGroup):
         self.waitNextTime = 0
         self.animateNext()
 
-
     def animateNext(self):
-
         if len(self.animateSequence) > 0:
             index = self.animateSequence.pop(0)
             button = self.get(index)
@@ -192,11 +188,7 @@ class SequenceButtonGroup(ButtonGroup):
 
     def animateEnd(self):
         ButtonGroup.animateEnd(self)
-
         self.waitNextStart()
-
-       
-
 
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, diff, space, count=9, delta=750):
@@ -218,6 +210,8 @@ class PlayableButtonGroup(ButtonGroup):
                     self.animate(button)
                     return index
 
+            
+        
         return None
 
     def push(self, index):
