@@ -114,12 +114,15 @@ class PauseMenuScene(MenuScene):
 
     def __init__(self, game, name, index, config=None):
         self.background = pygame.surface.Surface((640, 480), flags=pygame.SRCALPHA)
-        self.background.fill((90, 90, 90, 5))
+        self.background.fill((0, 0, 0, 95))
 
         menus = (('Resume', self.cont),
                  ('Back to Menu', self.back))
 
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
+
+    def start(self):
+        self.backgrounded = False
 
     def cont(self):
         self.game.director.endScene()
@@ -128,5 +131,8 @@ class PauseMenuScene(MenuScene):
         self.game.director.change('menu')
 
     def draw(self, screen):
-        screen.blit(self.background, (0, 0))
+        if not self.backgrounded:
+            screen.blit(self.background, (0, 0))
+            self.backgrounded = True
+
         super(PauseMenuScene, self).draw(screen)
