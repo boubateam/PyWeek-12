@@ -72,8 +72,6 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         return None
 
     def update(self):
-        print('update')
-        print(str(pygame.time.get_ticks()) + '-anime' + str(self.animTime) + '-wait' +  str(self.waitTime ) )
         if self.animating and  pygame.time.get_ticks() > self.animTime:
             self.animating = False
             self.animTime = 0
@@ -160,7 +158,7 @@ class SequenceButtonGroup(ButtonGroup):
 
 
     def animateNext(self):
-        print('animeNext')
+
         if len(self.animateSequence) > 0:
             index = self.animateSequence.pop(0)
             button = self.get(index)
@@ -176,9 +174,6 @@ class SequenceButtonGroup(ButtonGroup):
 
     def animateEnd(self):
         ButtonGroup.animateEnd(self)
-
-        #self.waitStart()
-        #self.animateNext()
         self.waitNextStart()
     
     
