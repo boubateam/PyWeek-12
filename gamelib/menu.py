@@ -101,16 +101,19 @@ class MainMenuScene(MenuScene):
         self.music_bg.play(-1,fade_ms=1000)
         
     def end(self):
-        self.music_bg.fadeout(1000)
+        pass
 
         
     def play(self):
+        self.music_bg.fadeout(4000)
         self.game.director.endScene(True)
 
     def credits(self):
+        self.music_bg.fadeout(1000)
         self.game.director.changeAndBack('credits')
 
     def exit(self):
+        self.music_bg.fadeout(1000)
         self.game.end()
 
     def draw(self, screen):

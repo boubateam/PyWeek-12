@@ -17,7 +17,10 @@ class GameOverScene(scene.Scene):
     
     def start(self):
         self.music_bg.play()
-        
+    
+    def end(self):
+        self.music_bg.fadeout(1000)    
+    
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONUP:
             self.game.director.change('topscore')

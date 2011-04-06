@@ -24,6 +24,9 @@ class TopScoreScene(scene.Scene):
         
     def start(self):
         self.music_bg.play()
+    
+    def end(self):
+        self.music_bg.fadeout(1000)
         
     def handleEvent(self, event):
         
