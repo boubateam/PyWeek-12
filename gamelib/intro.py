@@ -18,7 +18,7 @@ class IntroScene(scene.Scene):
         self.currentIntroIdx = None
         self.intros = []
         self.intros.append(Intro(4000, False, ['Welcome to', 'Ninth Kind']))
-        self.intros.append(Intro(4000, True, ['Im Evil !', 'Beat Me !', 'Mouhahah !']))
+        self.intros.append(Intro(4000, True, ["I'm Evil !", 'Beat Me !', 'Mouhahah !']))
 
     def start(self):
         self.music.play(-1, fade_ms=4000)
