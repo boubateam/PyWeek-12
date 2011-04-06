@@ -16,7 +16,7 @@ class Menu(pygame.surface.Surface):
         self.menu = None
         self.menurect = None
 
-        self.font = data.load_font('genotype.ttf', 25)
+        self.font = data.load_font('convoy.ttf', 45)
         self.set_colorkey((0, 0, 0)) # Transparent background
 
     def update(self):
