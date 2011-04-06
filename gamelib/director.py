@@ -51,11 +51,11 @@ class Director(object):
     def register(self, name, klass, config=None):
         if not issubclass(klass, scene.Scene):
             raise TypeError('Class passed is not a Scene')
-        #if issubclass(klass, LevelScene):
-        #    self.scenes.append([name + 'pre level', PreLevelScene, None, config])
+        if issubclass(klass, LevelScene):
+            self.scenes.append([name + 'pre level', PreLevelScene, None, config])
         self.scenes.append([name, klass, None, config])
 
-    def change(self, name, reinit=False):
+    def change(self, name, reset=False):
         if self.scene:
             self.scene.end()
 
@@ -70,8 +70,15 @@ class Director(object):
 
         scene = self.scenes[index]
 
-        if scene[2] == None or reinit:
-            scene[2] = scene[1](self.game, name, index, scene[3])
+        if scene[2] == None or reset:
+            klass = scene[1]
+
+            if scene[3] == None:
+                config = {}
+            else:
+                config = scene[3]
+
+            scene[2] = klass(self.game, name, index, config)
 
         self.index = index
         self.scene = scene[2]
@@ -115,11 +122,11 @@ class Director(object):
     def end(self):
         self.running = False
 
-    def endScene(self):
+    def endScene(self, reset=False):
         if not self.forceIndex == None:
-            self.change(self.scenes[self.forceIndex][0])
+            self.change(self.scenes[self.forceIndex][0], reset)
             self.forceIndex = None
         elif self.index + 1 < len(self.scenes):
-            self.change(self.scenes[self.index + 1][0])
+            self.change(self.scenes[self.index + 1][0], reset)
         else:
             self.end()

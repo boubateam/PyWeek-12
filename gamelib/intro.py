@@ -11,17 +11,14 @@ class IntroScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(IntroScene, self).__init__(game, name, index, config)
 
-#        self.text = data.render_text('genotype.ttf', 30, 'Ninth Kind', (255, 255, 255))
-#        self.textrect = self.text.get_rect()
-
         self.background = data.load_image('intro.png')
         self.music = data.load_sound('intro.ogg')
         
         self.endTime = None
         self.currentIntroIdx = None
         self.intros = []
-        self.intros.append(Intro(4000, ['Welcome to', 'Ninth Mind']))
-        self.intros.append(Intro(4000, ['Im Evil !', 'Beat Me !', 'Mouhahah !']))
+        self.intros.append(Intro(4000, False, ['Welcome to', 'Ninth Kind']))
+        self.intros.append(Intro(4000, True, ["I'm Evil !", 'Beat Me !', 'Mouhahah !']))
 
     def start(self):
         self.music.play(-1, fade_ms=4000)
@@ -34,19 +31,20 @@ class IntroScene(scene.Scene):
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                self.game.end()
-            elif event.key == pygame.K_SPACE:
                 self.game.director.endScene()
+            elif event.key == pygame.K_SPACE and self.intros[self.currentIntroIdx].canPass:
+                self.nextIntro()
+
+    def nextIntro(self):
+        if self.currentIntroIdx + 1 < len(self.intros):
+            self.currentIntroIdx += 1
+            self.endTime = pygame.time.get_ticks() + self.intros[self.currentIntroIdx].duration
+        else:
+            self.game.director.endScene()
 
     def update(self):
         if pygame.time.get_ticks() > self.endTime:
-            if self.currentIntroIdx + 1 < len(self.intros):
-                self.currentIntroIdx += 1
-                self.endTime = pygame.time.get_ticks() + self.intros[self.currentIntroIdx].duration
-            else:
-                self.game.director.endScene()
-
-        currIntro = self.intros[self.currentIntroIdx]
+            self.nextIntro()
         
     def draw(self, screen):
         currIntro = self.intros[self.currentIntroIdx]
@@ -57,17 +55,18 @@ class IntroScene(scene.Scene):
         screen.blit(currIntro, currIntroRect)
         
 class Intro(pygame.surface.Surface):
-    def __init__(self, duration, text, image=None):
-        pygame.surface.Surface.__init__(self, (320, 240))
+    def __init__(self, duration, canPass, text, image=None):
+        pygame.surface.Surface.__init__(self, (400, 300), flags=pygame.SRCALPHA)
         self.duration = duration
-        self.content = pygame.surface.Surface((320, 240))
+        self.canPass = canPass
         
         # Include texts into content
         tmpContent = None
-        idx = 0
-        for i in text:
-            tmpContent = data.render_text('genotype.ttf', 30, i, (255, 255, 255))
-            self.content.blit(tmpContent, (0, idx))
-            idx += 30
-            
-        self.blit(self.content, (0, 0))
+        top = 0
+        for partText in text:
+            tmpContent = data.render_text('ace.ttf', 34, partText, (255, 255, 255))
+            tmpSize = tmpContent.get_rect()
+            tmpSize.centerx = self.get_rect().centerx
+            tmpSize.top = top
+            self.blit(tmpContent, tmpSize)
+            top = top + tmpSize.height * 1.5

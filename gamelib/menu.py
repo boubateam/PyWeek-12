@@ -105,7 +105,8 @@ class MainMenuScene(MenuScene):
 
         
     def play(self):
-        self.game.director.endScene()
+        self.game.points = 0
+        self.game.director.endScene(True)
 
     def credits(self):
         self.game.director.changeAndBack('credits')
