@@ -13,8 +13,14 @@ class LevelScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(LevelScene, self).__init__(game, name, index, config)
 
-        self.count = config['count'] if config and 'count' in config else 9
-        self.delta = config['delta'] if config and 'delta' in config else 1000
+        self.font = data.load_font(None, 23)
+
+        self.count = config['count'] if 'count' in config else 9
+        self.delta = config['delta'] if 'delta' in config else 1000
+
+        self.points = config['points'] if 'points' in config else 100
+        self.pointsMulti = config['pointsMulti'] if 'pointsMulti' in config else 1
+        self.pointsText = None
 
         self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 15, 5, self.count, self.delta)
         self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 20, 15, self.count, self.delta)
@@ -88,6 +94,7 @@ class LevelScene(scene.Scene):
                 elif len(self.play) == self.count:
                     self.game.director.endScene(True)
                 elif len(self.play) == self.seqindex:
+                    self.game.points += self.points * self.pointsMulti
                     self.playing = False
                     self.seqStart()
 
@@ -95,8 +102,12 @@ class LevelScene(scene.Scene):
         self.sequence.update()
         self.buttons.update()
 
+        self.pointsText = self.font.render('%d' % (self.game.points, ), False, (255, 255, 255))
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
 
         self.sequence.draw(screen)
         self.buttons.draw(screen)
+
+        screen.blit(self.pointsText, (10, 10))

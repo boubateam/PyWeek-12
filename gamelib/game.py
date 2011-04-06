@@ -33,9 +33,9 @@ class Game(object):
     def initLevels(self):
         self.director.register('intro', IntroScene)
         self.director.register('menu', MainMenuScene)
-        self.director.register('alien-meeting', LevelScene, {'count': 9, 'delta': 1000})
-        self.director.register('alien-chat', LevelScene, {'count': 9, 'delta': 750})
-        self.director.register('alien-war', LevelScene, {'count': 9, 'delta': 350})
+        self.director.register('alien-meeting', LevelScene, {'count': 9, 'delta': 1000, 'pointsMulti': 1})
+        self.director.register('alien-chat', LevelScene, {'count': 9, 'delta': 750, 'pointsMulti': 2})
+        self.director.register('alien-war', LevelScene, {'count': 9, 'delta': 350, 'pointsMulti': 3})
         self.director.register('credits', CreditsScene)
         self.director.register('gameover', GameOverScene)
         self.director.register('pause', PauseMenuScene)
