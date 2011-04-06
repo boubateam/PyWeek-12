@@ -46,6 +46,7 @@ class LevelScene(scene.Scene):
         self.currentCounterStep = self.counterStepPerClick
         #counting only when button animation is over
         self.stepCountElapsingTime = False
+        self.stepCounterText = None
         
     def start(self):
         if self.pre_bg_channel == None :
@@ -106,7 +107,6 @@ class LevelScene(scene.Scene):
         self.buttons.update()
         
         if self.stepCountElapsingTime:
-            print "step counter is "+str(self.currentCounterStep)
             if pygame.time.get_ticks() > self.stepElapsedTimeCounter :
                 self.currentCounterStep -=1
                 self.stepElapsedTimeCounter = pygame.time.get_ticks()+self.stepElapsingInTime 
@@ -115,7 +115,10 @@ class LevelScene(scene.Scene):
                 self.game.director.change('gameover')
                 
     def draw(self, screen):
+        self.stepCounterText = data.render_text('LiberationSans-Regular.ttf', 15, "time "+str(self.currentCounterStep), (255, 0,0))
+        
         screen.blit(self.background, (0, 0))
+        screen.blit(self.stepCounterText, (300,0))
 
         self.sequence.draw(screen)
         self.buttons.draw(screen)
