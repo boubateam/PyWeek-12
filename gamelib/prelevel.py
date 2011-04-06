@@ -16,6 +16,7 @@ class PreLevelScene(scene.Scene):
 
         self.text     = data.render_text('genotype.ttf', 30, 'Get ready', (255, 0, 0))
         self.textrect = self.text.get_rect()
+        self.ttl      = 10
 
     def start(self):
         pass
@@ -32,5 +33,7 @@ class PreLevelScene(scene.Scene):
     def draw(self, screen):
         screen.fill((200, 200, 200))
         screen.blit(self.text, self.textrect)
-        pygame.time.delay(3000)
-        self.game.director.endScene()
+        pygame.time.wait(300)
+        self.ttl -= 1
+        if (self.ttl < 0):
+            self.game.director.endScene()
