@@ -37,8 +37,8 @@ class Director(object):
         if self.config['title']:
             pygame.display.set_caption(self.config['title'])
 
-        self.screen = pygame.display.set_mode(self.config['size'])
-        #self.screen = pygame.display.set_mode(self.config['size'],pygame.FULLSCREEN)
+        self.screenMode = pygame.RESIZABLE
+        self.screen = pygame.display.set_mode(self.config['size'],self.screenMode)
         
         self.clock = pygame.time.Clock()
         self.running = True
@@ -98,6 +98,14 @@ class Director(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.end()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_f :
+                    if self.screenMode != pygame.RESIZABLE:
+                        self.screenMode = pygame.RESIZABLE
+                    else:
+                        self.screenMode = pygame.FULLSCREEN
+                    self.screen = pygame.display.set_mode(self.config['size'],self.screenMode)
+                            
+        
                 else:
                     self.scene.handleEvent(event)
 
