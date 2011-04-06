@@ -18,17 +18,23 @@ class Button(pygame.sprite.Sprite):
 
         self.active = False
 
-    def associateTheme(self, theme):
-        self.sound = data.load_sound('button-' + str(1+self.name) + '.ogg', theme)
-        self.sound.set_volume(0.4) 
+    def associateTheme(self,type, theme):
+        self.sound = data.load_sound('button-' + type + '-' + str(1+self.name) + '.ogg', theme)
+        self.sound.set_volume(0.4)
+        self.channel = None 
 
     def update(self):
         if self.active:
             self.image.fill((0, 0, 255))
-            self.sound.play()
+            if self.channel == None:
+                self.channel = self.sound.play()
+                print('button-'+str(1+self.name)+' play')
         else:
             self.image.fill((255, 0, 0))
-            self.sound.stop()
+            if self.channel != None:
+                if not self.channel.get_busy():
+                    self.channel = None
+                    print('button-'+str(1+self.name)+' release')
 
 class ButtonGroup(pygame.sprite.OrderedUpdates):
     '''Contains buttons.
@@ -54,11 +60,6 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.wait = False
         self.waitTime = 0
 
-    def associateTheme(self, theme):
-        self.theme = theme
-
-        for button in self:
-            button.associateTheme(self.theme)
 
     def get(self, index):
         i = 0
@@ -111,6 +112,12 @@ class SequenceButtonGroup(ButtonGroup):
 
         self.animateSequence = []
         self.animateCallback = None
+    
+    def associateTheme(self,  theme):
+        self.theme = theme
+
+        for button in self:
+            button.associateTheme('sequence' ,self.theme)
 
     def play(self, number, callback):
         print number
@@ -155,7 +162,14 @@ class SequenceButtonGroup(ButtonGroup):
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9, delta=750):
         ButtonGroup.__init__(self, size, position, space, count, delta)
+    
+    def associateTheme(self,  theme):
+        self.theme = theme
 
+        for button in self:
+            button.associateTheme('playable' ,self.theme)
+
+    
     def click(self, pos):
         if not self.animating:
             for index in range(self.count):
@@ -167,5 +181,12 @@ class PlayableButtonGroup(ButtonGroup):
 
         return None
 
+    def push(self,index):
+        if not self.animating:
+            button = self.get(index)
+            self.animate(button)
+            return index
+        return None
+        
     def update(self):
         ButtonGroup.update(self)

@@ -16,7 +16,7 @@ class Menu(pygame.surface.Surface):
         self.menu = None
         self.menurect = None
 
-        self.font = data.load_font(None, 37)
+        self.font = data.load_font('genotype.ttf', 25)
         self.set_colorkey((0, 0, 0)) # Transparent background
 
     def update(self):
@@ -120,6 +120,10 @@ class PauseMenuScene(MenuScene):
                  ('Back to Menu', self.back))
 
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
+        self.music_bg = data.load_sound('pause.ogg')
+
+    def start(self):
+        self.music_bg.play()
 
     def start(self):
         self.backgrounded = False

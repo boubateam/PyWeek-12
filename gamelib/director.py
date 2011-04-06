@@ -5,6 +5,9 @@ import pygame
 import scene
 import data
 
+from level import LevelScene
+from prelevel import PreLevelScene
+
 class Director(object):
     '''Manage the logic behind the scenes.
     '''
@@ -46,7 +49,8 @@ class Director(object):
     def register(self, name, klass, config=None):
         if not issubclass(klass, scene.Scene):
             raise TypeError('Class passed is not a Scene')
-
+        #if issubclass(klass, LevelScene):
+        #    self.scenes.append([name + 'pre level', PreLevelScene, None, config])
         self.scenes.append([name, klass, None, config])
 
     def change(self, name, reinit=False):
