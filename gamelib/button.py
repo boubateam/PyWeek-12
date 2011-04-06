@@ -38,7 +38,6 @@ class Button(pygame.sprite.Sprite):
 
             if self.channel == None:
                 self.channel = self.sound.play()
-                print('button-'+str(1+self.name)+' play')
         else:
             self.image = self.origImage
             self.rect = self.origRect
@@ -46,7 +45,6 @@ class Button(pygame.sprite.Sprite):
             if self.channel != None:
                 if not self.channel.get_busy():
                     self.channel = None
-                    print('button-'+str(1+self.name)+' release')
 
 class ButtonGroup(pygame.sprite.OrderedUpdates):
     '''Contains buttons.

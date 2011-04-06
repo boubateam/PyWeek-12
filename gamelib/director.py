@@ -40,6 +40,8 @@ class Director(object):
         self.screenMode = pygame.RESIZABLE
         self.screen = pygame.display.set_mode(self.config['size'],self.screenMode)
         
+        self.allSoundMute = False
+        
         self.clock = pygame.time.Clock()
         self.running = True
 
@@ -104,8 +106,6 @@ class Director(object):
                     else:
                         self.screenMode = pygame.FULLSCREEN
                     self.screen = pygame.display.set_mode(self.config['size'],self.screenMode)
-                            
-        
                 else:
                     self.scene.handleEvent(event)
 
