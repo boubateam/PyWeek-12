@@ -65,7 +65,8 @@ class Intro(pygame.surface.Surface):
         top = 0
         for partText in text:
             tmpContent = data.render_text('genotype.ttf', 30, partText, (255, 255, 255))
-            tmpContentRect = tmpContent.get_rect()
-            tmpContentRect.center = (400, top)
-            self.blit(tmpContent, (0, top))
-            top += 30
+            tmpSize = tmpContent.get_rect()
+            tmpSize.centerx = self.get_rect().centerx
+            tmpSize.top = top
+            self.blit(tmpContent, tmpSize)
+            top = top + tmpSize.height * 1.5
