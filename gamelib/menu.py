@@ -96,7 +96,7 @@ class MainMenuScene(MenuScene):
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
 
     def play(self):
-        self.game.director.endScene()
+        self.game.director.endScene(True)
 
     def credits(self):
         self.game.director.changeAndBack('credits')
