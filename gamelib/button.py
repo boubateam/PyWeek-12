@@ -124,7 +124,8 @@ class SequenceButtonGroup(ButtonGroup):
 
         self.animateSequence = []
         self.animateCallback = None
-    
+        self.played = False
+        
     def associateTheme(self,  theme):
         self.theme = theme
 
@@ -166,7 +167,8 @@ class SequenceButtonGroup(ButtonGroup):
 
     def animateEnd(self):
         ButtonGroup.animateEnd(self)
-
+        self.played = True
+        
         if len(self.animateSequence) > 0:
             self.waitStart()
         else:

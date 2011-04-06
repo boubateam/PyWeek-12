@@ -9,6 +9,7 @@ from menu import MainMenuScene, PauseMenuScene
 from credits import CreditsScene
 from level import LevelScene
 from gameover import GameOverScene
+from topscore import TopScoreScene
 
 class Game(object):
     '''Manage the general game logic.
@@ -39,3 +40,4 @@ class Game(object):
         self.director.register('credits', CreditsScene)
         self.director.register('gameover', GameOverScene)
         self.director.register('pause', PauseMenuScene)
+        self.director.register('topscore', TopScoreScene)

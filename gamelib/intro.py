@@ -18,7 +18,7 @@ class IntroScene(scene.Scene):
         self.currentIntroIdx = None
         self.intros = []
         self.intros.append(Intro(4000, False, ['Welcome to', 'Ninth Kind']))
-        self.intros.append(Intro(4000, True, ['Im Evil !', 'Beat Me !', 'Mouhahah !']))
+        self.intros.append(Intro(4000, True, ["I'm Evil !", 'Beat Me !', 'Mouhahah !']))
 
     def start(self):
         self.music.play(-1, fade_ms=4000)
@@ -64,8 +64,9 @@ class Intro(pygame.surface.Surface):
         tmpContent = None
         top = 0
         for partText in text:
-            tmpContent = data.render_text('genotype.ttf', 30, partText, (255, 255, 255))
-            tmpContentRect = tmpContent.get_rect()
-            tmpContentRect.center = (400, top)
-            self.blit(tmpContent, (0, top))
-            top += 30
+            tmpContent = data.render_text('ace.ttf', 34, partText, (255, 255, 255))
+            tmpSize = tmpContent.get_rect()
+            tmpSize.centerx = self.get_rect().centerx
+            tmpSize.top = top
+            self.blit(tmpContent, tmpSize)
+            top = top + tmpSize.height * 1.5

@@ -45,6 +45,14 @@ class LevelScene(scene.Scene):
         self.bg_channel = None
 
         self.seqStart()
+        #step counter management
+        self.stepElapsingInTime = 1000
+        self.stepElapsedTimeCounter = 0
+        self.counterStepPerClick = 5
+        self.currentCounterStep = self.counterStepPerClick
+        #counting only when button animation is over
+        self.stepCountElapsingTime = False
+        self.stepCounterText = None
 
     def start(self):
         if self.pre_bg_channel == None :
@@ -67,11 +75,13 @@ class LevelScene(scene.Scene):
         self.seqindex += 1
         self.sequence.play(self.seqindex, self.seqEnd)
         self.sequencing = True
+        self.stepCountElapsingTime = False
 
     def seqEnd(self):
         self.sequencing = False
         self.playing = True
         self.play = []
+        self.stepCountElapsingTime = True
 
     def handleEvent(self, event):
         index = None
@@ -88,6 +98,7 @@ class LevelScene(scene.Scene):
 
             if index != None:
                 self.play.append(index)
+                self.currentCounterStep = self.counterStepPerClick
 
                 if not self.sequence.validate(self.play):
                     self.game.director.change('gameover')
@@ -104,8 +115,19 @@ class LevelScene(scene.Scene):
 
         self.pointsText = self.font.render('%d' % (self.game.points, ), False, (255, 255, 255))
 
+        if self.stepCountElapsingTime:
+            if pygame.time.get_ticks() > self.stepElapsedTimeCounter :
+                self.currentCounterStep -=1
+                self.stepElapsedTimeCounter = pygame.time.get_ticks()+self.stepElapsingInTime 
+            
+            if self.currentCounterStep < 0:
+                self.game.director.change('gameover')
+
     def draw(self, screen):
+        self.stepCounterText = data.render_text('LiberationSans-Regular.ttf', 15, "time "+str(self.currentCounterStep), (255, 0,0))
+        
         screen.blit(self.background, (0, 0))
+        screen.blit(self.stepCounterText, (300,0))
 
         self.sequence.draw(screen)
         self.buttons.draw(screen)

@@ -20,7 +20,7 @@ class GameOverScene(scene.Scene):
         
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONUP:
-            self.game.end()
+            self.game.director.change('topscore')
 
     def update(self):
         self.textrect.center = (320, 240)
