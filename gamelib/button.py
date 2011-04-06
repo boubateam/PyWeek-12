@@ -132,7 +132,6 @@ class SequenceButtonGroup(ButtonGroup):
             button.associateTheme('sequence' ,self.theme)
 
     def play(self, number, callback):
-        print number
         self.animateSequence = self.sequence[:number]
         self.animateCallback = callback
 
@@ -168,8 +167,12 @@ class SequenceButtonGroup(ButtonGroup):
     def animateEnd(self):
         ButtonGroup.animateEnd(self)
 
-        self.waitStart()
-        #self.animateNext()
+        if len(self.animateSequence) > 0:
+            self.waitStart()
+        else:
+            self.animateCallback()
+            self.animateCallback = None
+            self.animateSequence = []
 
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, diff, space, count=9, delta=750):
