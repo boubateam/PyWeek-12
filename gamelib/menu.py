@@ -124,8 +124,6 @@ class PauseMenuScene(MenuScene):
 
     def start(self):
         self.music_bg.play()
-
-    def start(self):
         self.backgrounded = False
 
     def cont(self):
