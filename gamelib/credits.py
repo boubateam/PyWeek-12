@@ -25,7 +25,14 @@ class CreditsScene(scene.Scene):
             self.names.append((rend, rect))
 
         self.background = data.load_image('credits.png')
-
+        self.music_bg = data.load_sound('credits.ogg')
+    
+    def start(self):
+        self.music_bg.play(fade_ms=1000)
+        
+    def end(self):
+        self.music_bg.fadeout(1000)
+        
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:

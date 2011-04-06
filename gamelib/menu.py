@@ -94,7 +94,16 @@ class MainMenuScene(MenuScene):
                  ('Exit', self.exit))
 
         MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
+        self.music_bg = data.load_sound('menu.ogg')
+        self.music_bg.set_volume(0.4)
+    
+    def start(self):
+        self.music_bg.play(fade_ms=1000)
+        
+    def end(self):
+        self.music_bg.fadeout(1000)
 
+        
     def play(self):
         self.game.director.endScene()
 
