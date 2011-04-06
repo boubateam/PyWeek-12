@@ -72,6 +72,8 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         return None
 
     def update(self):
+        print('update')
+        print(str(pygame.time.get_ticks()) + '-anime' + str(self.animTime) + '-wait' +  str(self.waitTime ) )
         if self.animating and  pygame.time.get_ticks() > self.animTime:
             self.animating = False
             self.animTime = 0
@@ -80,6 +82,7 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         if self.wait and pygame.time.get_ticks() > self.waitTime:
             self.waitEnd()
             self.waitExec()
+        
 
         pygame.sprite.OrderedUpdates.update(self)
 
@@ -105,13 +108,17 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.active = None
 
 class SequenceButtonGroup(ButtonGroup):
-    def __init__(self, size, position, space, count=9, delta=750):
+    def __init__(self, size, position, space, count=9, delta=750,delta_next=200):
         ButtonGroup.__init__(self, size, position, space, count, delta)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
 
         self.animateSequence = []
         self.animateCallback = None
+        
+        self.waitNext = False
+        self.waitNextTime = 0
+        self.deltaNext = delta_next
     
     def associateTheme(self,  theme):
         self.theme = theme
@@ -137,9 +144,23 @@ class SequenceButtonGroup(ButtonGroup):
         return True
 
     def update(self):
-        ButtonGroup.update(self)
+        if not self.waitNext:
+            ButtonGroup.update(self)
+        elif self.waitNext and pygame.time.get_ticks() > self.waitNextTime:
+            self.waitNextEnd()
+    
+    def waitNextStart(self):
+        self.waitNext = True
+        self.waitNextTime = pygame.time.get_ticks() + self.deltaNext
+
+    def waitNextEnd(self):
+        self.waitNext = False
+        self.waitNextTime = 0
+        self.animateNext()
+
 
     def animateNext(self):
+        print('animeNext')
         if len(self.animateSequence) > 0:
             index = self.animateSequence.pop(0)
             button = self.get(index)
@@ -157,8 +178,11 @@ class SequenceButtonGroup(ButtonGroup):
         ButtonGroup.animateEnd(self)
 
         #self.waitStart()
-        self.animateNext()
-
+        #self.animateNext()
+        self.waitNextStart()
+    
+    
+    
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, space, count=9, delta=750):
         ButtonGroup.__init__(self, size, position, space, count, delta)

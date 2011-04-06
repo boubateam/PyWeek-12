@@ -38,6 +38,8 @@ class Director(object):
             pygame.display.set_caption(self.config['title'])
 
         self.screen = pygame.display.set_mode(self.config['size'])
+        #self.screen = pygame.display.set_mode(self.config['size'],pygame.FULLSCREEN)
+        
         self.clock = pygame.time.Clock()
         self.running = True
 
