@@ -168,8 +168,8 @@ class SequenceButtonGroup(ButtonGroup):
     def animateEnd(self):
         ButtonGroup.animateEnd(self)
 
-        #self.waitStart()
-        self.animateNext()
+        self.waitStart()
+        #self.animateNext()
 
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, diff, space, count=9, delta=750):
