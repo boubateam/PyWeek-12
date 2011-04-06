@@ -7,30 +7,42 @@ class Button(pygame.sprite.Sprite):
     '''The Button class.
     '''
 
-    def __init__(self, name, size, position):
+    def __init__(self, name, size, position, diff):
         pygame.sprite.Sprite.__init__(self)
 
         self.name = name
-        self.image = pygame.Surface(size)
 
-        self.rect = self.image.get_rect()
-        self.rect.topleft = position
+        self.origImage = pygame.Surface(size, flags=pygame.SRCALPHA)
+        self.origRect = pygame.Rect(position, size)
+
+        self.image = self.origImage
+        self.rect = self.origRect
+
+        self.activeImage = None
+        self.activeRect = pygame.Rect(
+            (position[0] - diff, position[1] - diff),
+            (size[0] + diff * 2, size[1] + diff * 2))
 
         self.active = False
 
-    def associateTheme(self,type, theme):
+    def associateTheme(self, type, theme):
+        self.activeImage = data.load_image('button-' + type + '-' + str(1+self.name) + '.png', theme)
         self.sound = data.load_sound('button-' + type + '-' + str(1+self.name) + '.ogg', theme)
         self.sound.set_volume(0.4)
         self.channel = None 
 
     def update(self):
         if self.active:
-            self.image.fill((0, 0, 255))
+            self.image = self.activeImage
+            self.rect = self.activeRect
+
             if self.channel == None:
                 self.channel = self.sound.play()
                 print('button-'+str(1+self.name)+' play')
         else:
-            self.image.fill((255, 0, 0))
+            self.image = self.origImage
+            self.rect = self.origRect
+
             if self.channel != None:
                 if not self.channel.get_busy():
                     self.channel = None
@@ -40,14 +52,14 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
     '''Contains buttons.
     '''
 
-    def __init__(self, size, position, space, count=9, delta=750):
+    def __init__(self, size, position, diff, space, count=9, delta=750):
         pygame.sprite.OrderedUpdates.__init__(self)
 
         x = position[0]
         y = position[1]
 
         for i in range(count):
-            self.add(Button(i, size, (x, y)))
+            self.add(Button(i, size, (x, y), diff))
             x += size[0] + space
 
         self.count = count
@@ -105,8 +117,8 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.active = None
 
 class SequenceButtonGroup(ButtonGroup):
-    def __init__(self, size, position, space, count=9, delta=750):
-        ButtonGroup.__init__(self, size, position, space, count, delta)
+    def __init__(self, size, position, diff, space, count=9, delta=750):
+        ButtonGroup.__init__(self, size, position, diff, space, count, delta)
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
 
@@ -160,8 +172,8 @@ class SequenceButtonGroup(ButtonGroup):
         self.animateNext()
 
 class PlayableButtonGroup(ButtonGroup):
-    def __init__(self, size, position, space, count=9, delta=750):
-        ButtonGroup.__init__(self, size, position, space, count, delta)
+    def __init__(self, size, position, diff, space, count=9, delta=750):
+        ButtonGroup.__init__(self, size, position, diff, space, count, delta)
     
     def associateTheme(self,  theme):
         self.theme = theme
@@ -181,12 +193,12 @@ class PlayableButtonGroup(ButtonGroup):
 
         return None
 
-    def push(self,index):
+    def push(self, index):
         if not self.animating:
             button = self.get(index)
             self.animate(button)
             return index
         return None
-        
+
     def update(self):
         ButtonGroup.update(self)

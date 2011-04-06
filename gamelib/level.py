@@ -18,14 +18,16 @@ class LevelScene(scene.Scene):
         else:
             self.count = 9
 
-        self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 5, self.count)
-        self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 15, self.count)
+        self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 15, 5, self.count)
+        self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 20, 15, self.count)
 
         self.seqindex = 0
         self.sequencing = False
 
         self.play = []
         self.playing = False
+
+        self.background = data.load_image('background.png', self.name)
 
         self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
         self.music_bg = data.load_sound('background.ogg', self.name)
@@ -34,10 +36,10 @@ class LevelScene(scene.Scene):
 
         self.sequence.associateTheme(self.name) 
         self.buttons.associateTheme(self.name)
-        
+
         self.pre_bg_channel = None
         self.bg_channel = None
-        
+
         self.seqStart()
 
     def start(self):
@@ -45,18 +47,17 @@ class LevelScene(scene.Scene):
             self.pre_bg_channel = self.music_pre_bg.play()
         else:
             self.pre_bg_channel.unpause()
-        
+
         if self.bg_channel == None :
             self.bg_channel =  self.music_bg.play(-1, fade_ms=4000)
         else:
             self.bg_channel.unpause()
 
     def end(self):
-
         if self.pre_bg_channel != None :
             self.pre_bg_channel.pause()
         if self.bg_channel != None :
-            self.bg_channel.pause()    
+            self.bg_channel.pause()
 
     def seqStart(self):
         self.seqindex += 1
@@ -70,14 +71,14 @@ class LevelScene(scene.Scene):
 
     def handleEvent(self, event):
         index = None
-        
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game.director.changeAndBack('pause')
             elif event.key in range(pygame.K_1,pygame.K_9 ):
                 index = event.key - pygame.K_1  
                 index = self.buttons.push(index)
-                
+
         elif self.playing and event.type == pygame.MOUSEBUTTONUP:
             index = self.buttons.click(event.pos)
 
@@ -98,7 +99,7 @@ class LevelScene(scene.Scene):
         self.buttons.update()
 
     def draw(self, screen):
-        screen.fill((255, 255, 255))
+        screen.blit(self.background, (0, 0))
 
         self.sequence.draw(screen)
         self.buttons.draw(screen)
