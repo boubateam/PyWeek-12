@@ -44,9 +44,9 @@ class LevelScene(scene.Scene):
 
         self.seqStart()
         #step counter management
-        self.stepElapsingInTime = 1000
+        self.stepElapsingInTime = 1
         self.stepElapsedTimeCounter = 0
-        self.counterStepPerClick = 5
+        self.counterStepPerClick = 500
         self.currentCounterStep = self.counterStepPerClick
         #counting only when button animation is over
         self.stepCountElapsingTime = False
