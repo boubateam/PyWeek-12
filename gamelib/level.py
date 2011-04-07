@@ -5,6 +5,7 @@ import pygame
 import scene
 import button
 import data
+import string
 
 class LevelScene(scene.Scene):
     '''Is the basic level.
@@ -158,10 +159,14 @@ class LevelScene(scene.Scene):
                     self.seqStart()
 
     def draw(self, screen):
-        self.stepCounterText = data.render_text('LiberationSans-Regular.ttf', 15, "time "+str(self.currentCounterStep), (255, 0,0))
-
+        
+        if self.stepCountElapsingTime:
+            self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
+        else:
+            self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:---", (255, 0,0))
+            
         screen.blit(self.background, (0, 0))
-        screen.blit(self.stepCounterText, (300,0))
+        screen.blit(self.stepCounterText, (270,250))
 
         self.sequence.draw(screen)
         self.buttons.draw(screen)
