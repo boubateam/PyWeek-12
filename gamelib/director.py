@@ -100,7 +100,7 @@ class Director(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.end()
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_f :
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                     if self.screenMode != pygame.RESIZABLE:
                         self.screenMode = pygame.RESIZABLE
                     else:

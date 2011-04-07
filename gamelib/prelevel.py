@@ -17,12 +17,18 @@ class PreLevelScene(scene.Scene):
         self.text     = data.render_text('acmesa.ttf', 30, 'Get ready...', (255, 0, 0))
         self.textrect = self.text.get_rect()
         self.ttl      = 5
+        
+        self.music_pre_bg = data.load_sound('pre-background.ogg')
+        self.music_bg = data.load_sound('menu.ogg')
+        self.music_bg.set_volume(0.4)
 
     def start(self):
-        pass
+        self.music_pre_bg.play(-1, fade_ms=200)
+        self.music_bg.play(-1)
 
     def end(self):
-        pass
+        self.music_pre_bg.fadeout(1000)
+        self.music_bg.fadeout(1000)
 
     def handleEvent(self, event):
         pass 

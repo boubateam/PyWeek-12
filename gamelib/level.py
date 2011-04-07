@@ -33,9 +33,7 @@ class LevelScene(scene.Scene):
 
         self.background = data.load_image('background.png', self.name)
 
-        self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
         self.music_bg = data.load_sound('background.ogg', self.name)
-        self.music_pre_bg.set_volume(0.3)
         self.music_bg.set_volume(0.3)
 
         self.sequence.associateTheme(self.name) 
@@ -46,28 +44,21 @@ class LevelScene(scene.Scene):
 
         self.seqStart()
         #step counter management
-        self.stepElapsingInTime = 1000
+        self.stepElapsingInTime = 1
         self.stepElapsedTimeCounter = 0
-        self.counterStepPerClick = 5
+        self.counterStepPerClick = 500
         self.currentCounterStep = self.counterStepPerClick
         #counting only when button animation is over
         self.stepCountElapsingTime = False
         self.stepCounterText = None
 
     def start(self):
-        if self.pre_bg_channel == None :
-            self.pre_bg_channel = self.music_pre_bg.play()
-        else:
-            self.pre_bg_channel.unpause()
-
         if self.bg_channel == None :
-            self.bg_channel =  self.music_bg.play(-1, fade_ms=4000)
+            self.bg_channel =  self.music_bg.play(-1, fade_ms=100)
         else:
             self.bg_channel.unpause()
 
     def end(self):
-        if self.pre_bg_channel != None :
-            self.pre_bg_channel.pause()
         if self.bg_channel != None :
             self.bg_channel.pause()
 
