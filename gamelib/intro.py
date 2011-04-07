@@ -17,9 +17,10 @@ class IntroScene(scene.Scene):
         self.endTime = None
         self.currentIntroIdx = None
         self.intros = []
-        self.intros.append(Intro(4000, False, ['Welcome to', 'Ninth Kind']))
-        self.intros.append(Intro(4000, True, ["I'm Evil !", 'Beat Me !', 'Mouhahah !']))
-
+        self.intros.append(Intro(2500, False, ['Ninth Kind'], 34))
+        self.intros.append(Intro(5000, True, ['2038. The Earth.', 'Sonore Aliens wade in !', 'With their ultrasonic sounds', 'they want to destroy humanity !']))
+        self.intros.append(Intro(7000, True, ['Thanks to', 'the found sumerian technology', 'dated 4000 years BC', 'human resistance can recreate', 'sonore attacks and defend the Earth.', '', 'Fight for the resistance !']))
+		
     def start(self):
         self.music.play(-1, fade_ms=4000)
         self.currentIntroIdx = 0
@@ -55,8 +56,8 @@ class IntroScene(scene.Scene):
         screen.blit(currIntro, currIntroRect)
         
 class Intro(pygame.surface.Surface):
-    def __init__(self, duration, canPass, text, image=None):
-        pygame.surface.Surface.__init__(self, (400, 300), flags=pygame.SRCALPHA)
+    def __init__(self, duration, canPass, text, textsize = 25):
+        pygame.surface.Surface.__init__(self, (550, 380), flags=pygame.SRCALPHA)
         self.duration = duration
         self.canPass = canPass
         
@@ -64,7 +65,7 @@ class Intro(pygame.surface.Surface):
         tmpContent = None
         top = 0
         for partText in text:
-            tmpContent = data.render_text('ace.ttf', 34, partText, (255, 255, 255))
+            tmpContent = data.render_text('ace.ttf', textsize, partText, (255, 255, 255))
             tmpSize = tmpContent.get_rect()
             tmpSize.centerx = self.get_rect().centerx
             tmpSize.top = top
