@@ -1,4 +1,4 @@
-Garfunkel
+Ninth Kind
 =========
 
 Entry in PyWeek #12 <http://www.pyweek.org/12/>
