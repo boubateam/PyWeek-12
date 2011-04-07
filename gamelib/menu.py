@@ -90,10 +90,11 @@ class MainMenuScene(MenuScene):
         self.background = data.load_image('menu.png')
 
         menus = (('Start Game', self.play),
+                 ('How to play', self.howto),
                  ('Credits', self.credits),
                  ('Exit', self.exit))
 
-        MenuScene.__init__(self, game, name, index, config, (320, 240), menus)
+        MenuScene.__init__(self, game, name, index, config, (320, 270), menus)
         self.music_bg = data.load_sound('menu.ogg')
         self.music_bg.set_volume(0.4)
     
@@ -109,6 +110,9 @@ class MainMenuScene(MenuScene):
 
     def credits(self):
         self.game.director.changeAndBack('credits')
+
+    def howto(self):
+        self.game.director.changeAndBack('howto')
 
     def exit(self):
         self.game.end()
