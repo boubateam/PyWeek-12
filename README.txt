@@ -28,10 +28,17 @@ Othewise open a terminal / console and "cd" to the game directory and run:
 
 HOW TO PLAY THE GAME:
 
-Move the cursor around the screen with the mouse.
+At the top of the screen the monster attacks you.
 
-Press the left mouse button to fire the ducks.
+First he drops one sound.
+You must block this attack by recreating the exact same sound 
+by clicking on the band with the same color
 
+Then he drops the first sound plus one more. You must block the two sounds.
+And so on up to nine sound attacks.
+
+At the end if you have replayed all the nine sounds,
+you win and are allowed to go to the next level.
 
 
 LICENSE:
