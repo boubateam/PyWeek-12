@@ -31,7 +31,7 @@ class LevelScene(scene.Scene):
         self.play = []
         self.playing = False
 
-        self.background = data.load_image('background.png', self.name)
+        self.background = data.load_image('background.png')
 
         self.music_bg = data.load_sound('background.ogg', self.name)
         self.music_bg.set_volume(0.3)

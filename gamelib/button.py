@@ -26,7 +26,7 @@ class Button(pygame.sprite.Sprite):
         self.active = False
 
     def associateTheme(self, type, theme):
-        self.activeImage = data.load_image('button-' + type + '-' + str(1+self.name) + '.png', theme)
+        self.activeImage = data.load_image('button-' + type + '-' + str(1+self.name) + '.png')
         self.sound = data.load_sound('button-' + type + '-' + str(1+self.name) + '.ogg', theme)
         self.sound.set_volume(0.4)
         self.channel = None 
