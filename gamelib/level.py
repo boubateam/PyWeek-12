@@ -64,6 +64,12 @@ class LevelScene(scene.Scene):
         self.animBossRect.bottom = 240
         self.animBossTime = pygame.time.get_ticks() + 350
 
+
+        self.bottomPanel = pygame.Surface((640,240))
+        self.bottomPanel.fill((100, 100, 100))
+
+        self.bottomPanel.set_alpha(200)
+
         #self.seqStart()
 
     def start(self):
@@ -175,3 +181,4 @@ class LevelScene(scene.Scene):
 
         if not self.playing and not self.sequencing:
             screen.blit(self.animBossImage, self.animBossRect)
+            screen.blit(self.bottomPanel, (0, 240))
