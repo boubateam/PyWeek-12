@@ -42,15 +42,28 @@ class LevelScene(scene.Scene):
         self.pre_bg_channel = None
         self.bg_channel = None
 
-        self.seqStart()
-        #step counter management
+        # step counter management
         self.stepElapsingInTime = 1
         self.stepElapsedTimeCounter = 0
         self.counterStepPerClick = 500
         self.currentCounterStep = self.counterStepPerClick
-        #counting only when button animation is over
+
+        # counting only when button animation is over
         self.stepCountElapsingTime = False
         self.stepCounterText = None
+
+        boss = data.load_image('boss.png', self.name)
+        boss.set_colorkey((255, 0, 255))
+
+        self.animBossAction = 'scale'
+        self.animBossActionCount = 0
+        self.animBossImage = pygame.transform.scale(boss, (170, 170))
+        self.animBossRect = self.animBossImage.get_rect()
+        self.animBossRect.left = 360
+        self.animBossRect.bottom = 240
+        self.animBossTime = pygame.time.get_ticks() + 350
+
+        #self.seqStart()
 
     def start(self):
         if self.bg_channel == None :
@@ -107,16 +120,46 @@ class LevelScene(scene.Scene):
         self.pointsText = self.font.render('%d' % (self.game.points, ), False, (255, 255, 255))
 
         if self.stepCountElapsingTime:
-            if pygame.time.get_ticks() > self.stepElapsedTimeCounter :
+            if pygame.time.get_ticks() > self.stepElapsedTimeCounter:
                 self.currentCounterStep -=1
-                self.stepElapsedTimeCounter = pygame.time.get_ticks()+self.stepElapsingInTime 
-            
+                self.stepElapsedTimeCounter = pygame.time.get_ticks()+self.stepElapsingInTime
+
             if self.currentCounterStep < 0:
                 self.game.director.change('gameover')
+        
+        if not self.playing and not self.sequencing:
+            if pygame.time.get_ticks() > self.animBossTime:
+                self.animBossTime += 350
+
+                if self.animBossAction == 'scale':
+                    self.animBossActionCount += 1
+
+                    self.animBossImage = pygame.transform.scale(self.animBossImage,
+                        (self.animBossRect.w - 10, self.animBossRect.h - 10))
+
+                    bottom = self.animBossRect.bottom
+                    left = self.animBossRect.left
+
+                    self.animBossRect = self.animBossImage.get_rect()
+                    self.animBossRect.bottom = bottom
+                    self.animBossRect.left = left - 5
+
+                    if self.animBossActionCount == 13:
+                        self.animBossActionCount = 0
+                        self.animBossAction = 'moveup'
+                elif self.animBossAction == 'moveup':
+                    self.animBossActionCount += 1
+                    self.animBossRect.top -= 5
+
+                    if self.animBossActionCount == 16:
+                        self.animBossActionCount = 0
+                        self.animBossAction = None
+                else:
+                    self.seqStart()
 
     def draw(self, screen):
         self.stepCounterText = data.render_text('LiberationSans-Regular.ttf', 15, "time "+str(self.currentCounterStep), (255, 0,0))
-        
+
         screen.blit(self.background, (0, 0))
         screen.blit(self.stepCounterText, (300,0))
 
@@ -124,3 +167,6 @@ class LevelScene(scene.Scene):
         self.buttons.draw(screen)
 
         screen.blit(self.pointsText, (10, 10))
+
+        if not self.playing and not self.sequencing:
+            screen.blit(self.animBossImage, self.animBossRect)
