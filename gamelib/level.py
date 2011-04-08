@@ -62,7 +62,7 @@ class LevelScene(scene.Scene):
         self.animBossRect = self.animBossImage.get_rect()
         self.animBossRect.left = 360
         self.animBossRect.bottom = 240
-        self.animBossTime = pygame.time.get_ticks() + 350
+        self.animBossTime = pygame.time.get_ticks() + 150
 
         #self.seqStart()
 
@@ -127,10 +127,10 @@ class LevelScene(scene.Scene):
 
             if self.currentCounterStep < 0:
                 self.game.director.change('gameover')
-        
+
         if not self.playing and not self.sequencing:
             if pygame.time.get_ticks() > self.animBossTime:
-                self.animBossTime += 350
+                self.animBossTime += 150
 
                 if self.animBossAction == 'scale':
                     self.animBossActionCount += 1
@@ -143,9 +143,9 @@ class LevelScene(scene.Scene):
 
                     self.animBossRect = self.animBossImage.get_rect()
                     self.animBossRect.bottom = bottom
-                    self.animBossRect.left = left - 5
+                    self.animBossRect.left = left - 4
 
-                    if self.animBossActionCount == 13:
+                    if self.animBossActionCount == 14:
                         self.animBossActionCount = 0
                         self.animBossAction = 'moveup'
                 elif self.animBossAction == 'moveup':
@@ -159,12 +159,11 @@ class LevelScene(scene.Scene):
                     self.seqStart()
 
     def draw(self, screen):
-        
         if self.stepCountElapsingTime:
             self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
         else:
             self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:---", (255, 0,0))
-            
+
         screen.blit(self.background, (0, 0))
         screen.blit(self.stepCounterText, (270,250))
 
