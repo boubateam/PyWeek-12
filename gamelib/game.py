@@ -3,6 +3,7 @@
 
 import pygame
 import director
+import data
 
 from intro import IntroScene
 from menu import MainMenuScene, PauseMenuScene
@@ -22,6 +23,8 @@ class Game(object):
         self.director = director.Director(self, {
             'title' : 'Ninth Kind',
             'show_fps' : False})
+        self.music = data.load_sound('intro.ogg')
+        self.channel = None
 
     def run(self):
         self.initLevels()
