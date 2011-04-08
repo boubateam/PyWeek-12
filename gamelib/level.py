@@ -14,7 +14,7 @@ class LevelScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(LevelScene, self).__init__(game, name, index, config)
 
-        self.font = data.load_font(None, 23)
+        self.font = data.load_font(data.FONT_FIX, 23)
 
         self.count = config['count'] if 'count' in config else 9
         self.delta = config['delta'] if 'delta' in config else 1000
@@ -36,6 +36,8 @@ class LevelScene(scene.Scene):
 
         self.music_bg = data.load_sound('background.ogg', self.name)
         self.music_bg.set_volume(0.3)
+        self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
+        self.music_pre_bg.set_volume(0.3)
 
         self.sequence.associateTheme(self.name) 
         self.buttons.associateTheme(self.name)
@@ -62,28 +64,38 @@ class LevelScene(scene.Scene):
         self.animBossRect = self.animBossImage.get_rect()
         self.animBossRect.left = 360
         self.animBossRect.bottom = 240
-        self.animBossTime = pygame.time.get_ticks() + 150
-
+        self.animBossTime = 0
 
         self.bottomPanel = pygame.Surface((640,240))
         self.bottomPanel.fill((100, 100, 100))
         self.bottomPanel.set_alpha(200)
-        
-        self.bottomText     = data.render_text('acmesa.ttf', 30, 'Get ready...', (255, 0, 0))
+
+        self.bottomText     = data.render_text(data.FONT_MAIN, 30, 'Get ready...', (255, 0, 0))
         self.bottomTextRect = self.bottomText.get_rect()
+        self.bottomTextRect.center = (320, 360)
 
         #self.seqStart()
 
     def start(self):
-        if self.bg_channel == None :
+        if self.bg_channel == None:
             self.bg_channel =  self.music_bg.play(-1, fade_ms=100)
         else:
             self.bg_channel.unpause()
+        
+        if self.pre_bg_channel == None:
+            self.pre_bg_channel =  self.music_pre_bg.play(fade_ms=100)
+        else:
+            self.pre_bg_channel.unpause()
+
+        if not self.playing and not self.sequencing:
+            self.animBossTime = pygame.time.get_ticks() + 150
 
     def end(self):
         if self.bg_channel != None :
             self.bg_channel.pause()
-
+        if self.pre_bg_channel != None :
+            self.pre_bg_channel.pause()
+            
     def seqStart(self):
         self.seqindex += 1
         self.sequence.play(self.seqindex, self.seqEnd)
@@ -156,16 +168,18 @@ class LevelScene(scene.Scene):
                     if self.animBossActionCount == 14:
                         self.animBossActionCount = 0
                         self.animBossAction = 'moveup'
+
                     self.bottomTextRect.center = (320, 360)
+
                 elif self.animBossAction == 'moveup':
-                    self.bottomText = data.render_text('acmesa.ttf', 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
+                    self.bottomText = data.render_text(data.FONT_MAIN, 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
                     self.bottomTextRect.center = (400, 360)
-                    
+
                     self.animBossActionCount += 1
-                    
-                    if self.animBossActionCount <= 8:
+
+                    if self.animBossActionCount <= 10:
                         self.animBossRect.top -= 5
-                    elif self.animBossActionCount>8 and self.animBossActionCount<16:
+                    elif self.animBossActionCount > 10 and self.animBossActionCount < 16:
                         rect = pygame.Rect(0, 5,
                                            self.animBossRect.w,
                                            self.animBossRect.h - 5,
@@ -175,15 +189,14 @@ class LevelScene(scene.Scene):
                     elif self.animBossActionCount == 16:
                         self.animBossActionCount = 0
                         self.animBossAction = None
-                        
                 else:
                     self.seqStart()
 
     def draw(self, screen):
         if self.stepCountElapsingTime:
-            self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
+            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
         else:
-            self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:---", (255, 0,0))
+            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:---", (255, 0,0))
 
         screen.blit(self.background, (0, 0))
         screen.blit(self.stepCounterText, (270,250))

@@ -30,11 +30,13 @@ class IntroScene(scene.Scene):
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_ESCAPE: 
                 self.game.director.endScene()
             elif event.key == pygame.K_SPACE and self.intros[self.currentIntroIdx].canPass:
                 self.nextIntro()
-
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.game.director.endScene()
+            
     def nextIntro(self):
         if self.currentIntroIdx + 1 < len(self.intros):
             self.currentIntroIdx += 1
@@ -64,7 +66,7 @@ class Intro(pygame.surface.Surface):
         tmpContent = None
         top = 0
         for partText in text:
-            tmpContent = data.render_text('ace.ttf', textsize, partText, (255, 255, 255))
+            tmpContent = data.render_text(data.FONT_MAIN, textsize, partText, (255, 255, 255))
             tmpSize = tmpContent.get_rect()
             tmpSize.centerx = self.get_rect().centerx
             tmpSize.top = top
