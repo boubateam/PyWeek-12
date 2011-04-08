@@ -16,7 +16,7 @@ class HowtoScene(scene.Scene):
         self.music_bg = data.load_sound('credits.ogg')
 
     def start(self):
-        self.music_bg.play(-1,fade_ms=1000)
+        self.music_bg.play(-1, fade_ms=1000)
 
     def end(self):
         self.music_bg.fadeout(1000)
