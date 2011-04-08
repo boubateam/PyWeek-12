@@ -73,7 +73,9 @@ class CreditsScene(scene.Scene):
         self.teamRect.topright = (640 - 25, y)
 
     def draw(self, screen):
-        screen.blit(self.background, (0, 0))
+        #screen.blit(self.background, (0, 0))
+        screen.fill((0, 0, 0))
+
         screen.blit(self.text, self.textrect)
         screen.blit(self.design, self.designRect)
         screen.blit(self.designLabel, self.designLabelRect)

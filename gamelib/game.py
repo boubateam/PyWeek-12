@@ -21,8 +21,8 @@ class Game(object):
         self.difficulty = 4
         self.points = 0
         self.director = director.Director(self, {
-            'title' : 'PyGame',
-            'show_fps' : True})
+            'title' : 'Ninth Kind',
+            'show_fps' : False})
 
     def run(self):
         self.initLevels()
