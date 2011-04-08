@@ -122,6 +122,13 @@ class MainMenuScene(MenuScene):
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
+        
+        title = self.menu.font.render("Ninth Kind", True, (255, 255, 255))
+        titlerect = title.get_rect()
+        titlerect.centerx = screen.get_rect().centerx
+        titlerect.top = 30
+        screen.blit(title, titlerect)
+        
         super(MainMenuScene, self).draw(screen)
 
 class PauseMenuScene(MenuScene):
