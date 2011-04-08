@@ -25,6 +25,7 @@ class GameOverScene(scene.Scene):
         self.blinkInputTime = 400
         self.userFilledStr = []
         self.usernickText = None
+        self.usernickTextRect = None
         self.userFillingTextField = True
         self.showUnderscore = True
         
@@ -60,16 +61,6 @@ class GameOverScene(scene.Scene):
                     self.userFilledStr.append(chr(event.key))
 
     def update(self):
-        self.gameovertxtRect.center = (320, 20)
-        self.usernickText = data.render_text('genotype.ttf', 17, string.join(self.userFilledStr), (255, 255, 255))
-        self.usernickTextRect = self.teaserText.get_rect()
-        self.teaserTextrect.center = (320, 50)
-        self.usernickTextRect.center = (320, 70)
-        
-        if pygame.time.get_ticks() > self.blinkInputCounter :
-            self.blinkInputCounter = pygame.time.get_ticks()+self.blinkInputTime
-            self.showUnderscore = not self.showUnderscore 
-
         llen = len(self.userFilledStr)
 
         if self.showUnderscore and (llen==0 or self.userFilledStr[llen-1] !=  '_'):
@@ -77,6 +68,16 @@ class GameOverScene(scene.Scene):
         elif llen>0  and self.showUnderscore == False:
             if self.userFilledStr[llen-1] == '_':
                 self.userFilledStr.pop()
+                        
+        self.gameovertxtRect.center = (320, 20)
+        self.usernickText = data.render_text('genotype.ttf', 17, string.join(self.userFilledStr), (255, 255, 255))
+        self.usernickTextRect = self.usernickText.get_rect()
+        self.teaserTextrect.center = (320, 50)
+        self.usernickTextRect.center = (320, 70)
+        
+        if pygame.time.get_ticks() > self.blinkInputCounter :
+            self.blinkInputCounter = pygame.time.get_ticks()+self.blinkInputTime
+            self.showUnderscore = not self.showUnderscore 
                 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))

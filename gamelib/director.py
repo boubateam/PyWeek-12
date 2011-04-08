@@ -44,6 +44,8 @@ class Director(object):
 
         self.forceIndex = None
         self.index = None
+        self.nextLoopScene = None
+        self.nextLoopSceneReset = False
         self.scene = None
         self.scenes = []
 
@@ -53,6 +55,12 @@ class Director(object):
         self.scenes.append([name, klass, None, config])
 
     def change(self, name, reset=False):
+        self.nextLoopScene = name
+        self.nextLoopSceneReset = reset
+        
+    def doChange(self):
+        name = self.nextLoopScene
+        reset = self.nextLoopSceneReset
         if self.scene:
             self.scene.end()
 
@@ -88,7 +96,11 @@ class Director(object):
     def run(self):
         while self.running:
             self.clock.tick(self.config['framerate'])
-
+            if not self.nextLoopScene == None:
+                self.doChange()
+                self.nextLoopScene = None
+                self.nextLoopSceneReset = False
+            
             if not self.scene:
                 self.end()
 
