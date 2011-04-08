@@ -19,7 +19,7 @@ class LevelScene(scene.Scene):
         self.count = config['count'] if 'count' in config else 9
         self.delta = config['delta'] if 'delta' in config else 1000
 
-        self.points = config['points'] if 'points' in config else 100
+        self.points = config['points'] if 'points' in config else 500
         self.pointsMulti = config['pointsMulti'] if 'pointsMulti' in config else 1
         self.pointsText = None
 
@@ -122,6 +122,9 @@ class LevelScene(scene.Scene):
             index = self.buttons.click(event.pos)
 
             if index != None:
+                lessPoints = self.currentCounterStep
+                sumPoints = False
+
                 self.play.append(index)
                 self.currentCounterStep = self.counterStepPerClick
 
@@ -130,9 +133,15 @@ class LevelScene(scene.Scene):
                 elif len(self.play) == self.count:
                     self.game.director.endScene(True)
                 elif len(self.play) == self.seqindex:
-                    self.game.points += self.points * self.pointsMulti
+                    sumPoints = True
+
                     self.playing = False
                     self.seqStart()
+                else:
+                    sumPoints = True
+
+                if sumPoints:
+                    self.game.points += (self.points - (500 - lessPoints)) * self.pointsMulti
 
     def update(self):
         self.sequence.update()
@@ -142,8 +151,8 @@ class LevelScene(scene.Scene):
 
         if self.stepCountElapsingTime:
             if pygame.time.get_ticks() > self.stepElapsedTimeCounter:
-                self.currentCounterStep -=1
-                self.stepElapsedTimeCounter = pygame.time.get_ticks()+self.stepElapsingInTime
+                self.currentCounterStep -= 1
+                self.stepElapsedTimeCounter = pygame.time.get_ticks() + self.stepElapsingInTime
 
             if self.currentCounterStep < 0:
                 self.game.director.change('gameover')
