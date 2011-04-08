@@ -39,11 +39,11 @@ def load_font(name, size):
 
     return pygame.font.Font(filename, size)
 
-def load_sound(filename,theme=''):
+def load_sound(filename, theme=''):
     if theme == '':
         return pygame.mixer.Sound(filepath(filename))
     else:
-        return pygame.mixer.Sound(filepath('themes/' + theme + '/'+ filename))
+        return pygame.mixer.Sound(filepath(os.path.join('themes', theme,filename)))
 
 def render_text(fontname, fontsize, text, color):
     font = load_font(fontname, fontsize)

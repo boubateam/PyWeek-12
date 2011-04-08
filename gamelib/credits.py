@@ -25,6 +25,9 @@ class CreditsScene(scene.Scene):
         self.music = data.render_text('LiberationSans-Regular.ttf', 21, 'TOTOleHero', (255, 255, 255))
         self.musicRect = self.music.get_rect()
 
+        self.namesLabel = data.render_text('acmesa.ttf', 23, 'Developers', (255, 255, 127))
+        self.namesLabelRect = self.namesLabel.get_rect()
+
         self.names = []
 
         for name in names:
@@ -64,21 +67,31 @@ class CreditsScene(scene.Scene):
         self.musicLabelRect.topright = (self.musicRect.left - 7, y)
 
         y += self.musicLabelRect.height * 2
+        self.namesLabelRect.topleft = (25, y)
+        y += 7
 
+        i = 0
+        x = 280
         for value in self.names:
             value[1].center = (x, y)
-            y += value[1].height * 1.5
+            x += 130
+            i += 1
+            if i % 3 == 0:
+                y += value[1].height * 1.5
+                x = 280
 
-        y += 35
-        self.teamRect.topright = (640 - 25, y)
+        self.teamRect.bottomright = (640 - 25, 480 - 25)
 
     def draw(self, screen):
-        screen.blit(self.background, (0, 0))
+        #screen.blit(self.background, (0, 0))
+        screen.fill((0, 0, 0))
+
         screen.blit(self.text, self.textrect)
         screen.blit(self.design, self.designRect)
         screen.blit(self.designLabel, self.designLabelRect)
         screen.blit(self.music, self.musicRect)
         screen.blit(self.musicLabel, self.musicLabelRect)
+        screen.blit(self.namesLabel, self.namesLabelRect)
 
         for rend, rect in self.names:
             screen.blit(rend, rect)

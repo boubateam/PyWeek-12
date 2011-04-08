@@ -1,5 +1,5 @@
 Ninth Kind
-=========
+==========
 
 Entry in PyWeek #12 <http://www.pyweek.org/12/>
 Team: Bouba Team
