@@ -5,6 +5,7 @@ import pygame
 import scene
 import data
 import string
+import os
 
 class GameOverScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
@@ -16,7 +17,7 @@ class GameOverScene(scene.Scene):
 
         self.music_bg = data.load_sound('gameover.ogg')
 
-        self.teaserText = data.render_text(data.FONT_MAIN, 17, 'Who\'s the rockstar with 1000 points ?', (255, 255, 255))
+        self.teaserText = data.render_text(data.FONT_MAIN, 17, 'Who\'s the rockstar with '+str(self.game.points)+' points ?', (255, 255, 255))
         self.teaserTextrect = self.teaserText.get_rect()
 
         #temp
@@ -28,19 +29,23 @@ class GameOverScene(scene.Scene):
         self.usernickTextRect = None
         self.userFillingTextField = True
         self.showUnderscore = True
-        self.lScoreFile = open(data.filepath('topscore.txt'), 'r+')
+        self.lScoreFile = None
         self.userscores = None
         self.orderedTabScore = []
         self.buildTabScore()
         
     def buildTabScore(self):
+        self.lScoreFile = open(data.filepath('topscore.txt'), 'r')
         self.userscores = self.lScoreFile.readlines()
+        self.lScoreFile.close()
+        self.orderedTabScore = []
         
         for i in self.userscores:
             curinfo = i.partition('-')
             self.orderedTabScore.append((curinfo[0], curinfo[2].strip()))
             
-        self.orderedTabScore.sort()
+        self.orderedTabScore.sort(reverse=True)
+        
         print self.orderedTabScore
 
     def start(self):
@@ -74,16 +79,17 @@ class GameOverScene(scene.Scene):
                     self.userFilledStr.append(chr(event.key))
 
     def update(self):
-        llen = len(self.userFilledStr)
-
-        if self.showUnderscore and (llen==0 or self.userFilledStr[llen-1] !=  '_'):
-            self.userFilledStr.append('_')
-        elif llen>0  and self.showUnderscore == False:
-            if self.userFilledStr[llen-1] == '_':
-                self.userFilledStr.pop()
+        if self.userFillingTextField :
+            llen = len(self.userFilledStr)
+    
+            if self.showUnderscore and (llen==0 or self.userFilledStr[llen-1] !=  '_'):
+                self.userFilledStr.append('_')
+            elif llen>0  and self.showUnderscore == False:
+                if self.userFilledStr[llen-1] == '_':
+                    self.userFilledStr.pop()
                         
         self.gameovertxtRect.center = (320, 20)
-        self.usernickText = data.render_text(data.FONT_TITLE, 17, string.join(self.userFilledStr), (255, 255, 255))
+        self.usernickText = data.render_text(data.FONT_TITLE, 17, "".join(self.userFilledStr), (255, 255, 255))
         self.usernickTextRect = self.usernickText.get_rect()
         self.teaserTextrect.center = (320, 50)
         self.usernickTextRect.center = (320, 70)
@@ -92,19 +98,13 @@ class GameOverScene(scene.Scene):
             self.blinkInputCounter = pygame.time.get_ticks()+self.blinkInputTime
             self.showUnderscore = not self.showUnderscore 
 
-        llen = len(self.userFilledStr)
-
-        if self.showUnderscore and (llen==0 or self.userFilledStr[llen-1] !=  '_'):
-            self.userFilledStr.append('_')
-        elif llen>0  and self.showUnderscore == False:
-            if self.userFilledStr[llen-1] == '_':
-                self.userFilledStr.pop()
-
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         screen.blit(self.gameovertxt, self.gameovertxtRect)
-        screen.blit(self.teaserText, self.teaserTextrect)
-        screen.blit(self.usernickText, self.usernickTextRect)
+
+        if self.userFillingTextField :
+            screen.blit(self.teaserText, self.teaserTextrect)
+            screen.blit(self.usernickText, self.usernickTextRect)
         
         y = 70
         for userPts, username in self.orderedTabScore:
@@ -115,9 +115,10 @@ class GameOverScene(scene.Scene):
                 screen.blit(tabScoreName,rect)
 
     def saveUserName(self):
-        
-        lstr = string.join(self.userFilledStr)
-        self.lScoreFile.write(str(self.game.points)+"-"+str(lstr.strip()))
+        self.lScoreFile = open(data.filepath('topscore.txt'), 'a')
+        lstr = "".join(self.userFilledStr)
+        self.lScoreFile.write(str(self.game.points)+"-"+str(lstr.strip())+os.linesep)
+        self.lScoreFile.close()
         self.buildTabScore()
-
-        print "Saved user  "+string.join(self.userFilledStr)
+        
+        print "Saved user  "+"".join(self.userFilledStr)
