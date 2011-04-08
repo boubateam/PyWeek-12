@@ -28,20 +28,6 @@ class GameOverScene(scene.Scene):
         self.usernickTextRect = None
         self.userFillingTextField = True
         self.showUnderscore = True
-        self.lScoreFile = open(data.filepath('topscore.txt'), 'rw+')
-        self.userscores = None
-        self.orderedTabScore = []
-        self.buildTabScore()
-        
-    def buildTabScore(self):
-        self.userscores = self.lScoreFile.readlines()
-        
-        for i in self.userscores:
-            curinfo = i.partition('-')
-            self.orderedTabScore.append((curinfo[0], curinfo[2].strip()))
-            
-        self.orderedTabScore.sort()
-        print self.orderedTabScore
 
     def start(self):
         self.music_bg.play()
@@ -70,7 +56,7 @@ class GameOverScene(scene.Scene):
                 elif event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:                    
                     self.userFillingTextField = False
                     self.saveUserName()
-                elif event.key <= 127 and event.key >= 97:
+                elif event.key <= 127:
                     self.userFilledStr.append(chr(event.key))
 
     def update(self):
@@ -91,6 +77,9 @@ class GameOverScene(scene.Scene):
         if pygame.time.get_ticks() > self.blinkInputCounter :
             self.blinkInputCounter = pygame.time.get_ticks()+self.blinkInputTime
             self.showUnderscore = not self.showUnderscore 
+<<<<<<< HEAD
+                
+=======
 
         llen = len(self.userFilledStr)
 
@@ -100,24 +89,12 @@ class GameOverScene(scene.Scene):
             if self.userFilledStr[llen-1] == '_':
                 self.userFilledStr.pop()
 
+>>>>>>> d7feb6f5361ed59a478cd2f5ac8f5897436feebf
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         screen.blit(self.gameovertxt, self.gameovertxtRect)
         screen.blit(self.teaserText, self.teaserTextrect)
         screen.blit(self.usernickText, self.usernickTextRect)
-        
-        y = 70
-        for userPts, username in self.orderedTabScore:
-                y+=20
-                tabScoreName = data.render_text('genotype.ttf', 17, userPts+"-"+username, (255, 255, 255))
-                rect = tabScoreName.get_rect()
-                rect.center = (320, y)
-                screen.blit(tabScoreName,rect)
 
     def saveUserName(self):
-        
-        lstr = string.join(self.userFilledStr)
-        self.lScoreFile.write(str(self.game.points)+"-"+str(lstr.strip()))
-        self.buildTabScore()
-
-        print "Saved user  "+string.join(self.userFilledStr)
+        print "Save user here "+string.join(self.userFilledStr)
