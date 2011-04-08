@@ -162,11 +162,20 @@ class LevelScene(scene.Scene):
                     self.bottomTextRect.center = (400, 360)
                     
                     self.animBossActionCount += 1
-                    self.animBossRect.top -= 5
-
-                    if self.animBossActionCount == 16:
+                    
+                    if self.animBossActionCount <= 8:
+                        self.animBossRect.top -= 5
+                    elif self.animBossActionCount>8 and self.animBossActionCount<16:
+                        rect = pygame.Rect(0, 5,
+                                           self.animBossRect.w,
+                                           self.animBossRect.h - 5,
+                                           )
+                        self.animBossImage = self.animBossImage.subsurface(rect)
+                        self.animBossRect.h -= 5
+                    elif self.animBossActionCount == 16:
                         self.animBossActionCount = 0
                         self.animBossAction = None
+                        
                 else:
                     self.seqStart()
 
