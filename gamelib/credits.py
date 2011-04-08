@@ -9,23 +9,23 @@ class CreditsScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(CreditsScene, self).__init__(game, name, index, config)
 
-        self.text = data.render_text('ace.ttf', 37, 'Thanks for Playing', (255, 255, 255))
+        self.text = data.render_text(data.FONT_TITLE, 37, 'Thanks for Playing', (255, 255, 255))
         self.textrect = self.text.get_rect()
 
-        font = data.load_font('LiberationSans-Regular.ttf', 17)
+        font = data.load_font(data.FONT_MAIN, 17)
         names = ('ahsio', 'cyqui', 'gleuh', 'greg0ire', 'joksnet')
 
-        self.designLabel = data.render_text('acmesa.ttf', 23, 'Design:', (255, 255, 127))
+        self.designLabel = data.render_text(data.FONT_TITLE, 23, 'Design:', (255, 255, 127))
         self.designLabelRect = self.designLabel.get_rect()
-        self.design = data.render_text('LiberationSans-Regular.ttf', 21, 'tocab', (255, 255, 255))
+        self.design = data.render_text(data.FONT_MAIN, 21, 'tocab', (255, 255, 255))
         self.designRect = self.design.get_rect()
 
-        self.musicLabel = data.render_text('acmesa.ttf', 23, 'Music:', (255, 255, 127))
+        self.musicLabel = data.render_text(data.FONT_TITLE, 23, 'Music:', (255, 255, 127))
         self.musicLabelRect = self.musicLabel.get_rect()
-        self.music = data.render_text('LiberationSans-Regular.ttf', 21, 'TOTOleHero', (255, 255, 255))
+        self.music = data.render_text(data.FONT_MAIN, 21, 'TOTOleHero', (255, 255, 255))
         self.musicRect = self.music.get_rect()
 
-        self.namesLabel = data.render_text('acmesa.ttf', 23, 'Developers', (255, 255, 127))
+        self.namesLabel = data.render_text(data.FONT_TITLE, 23, 'Developers', (255, 255, 127))
         self.namesLabelRect = self.namesLabel.get_rect()
 
         self.names = []
@@ -36,7 +36,7 @@ class CreditsScene(scene.Scene):
 
             self.names.append((rend, rect))
 
-        self.team = data.render_text('genotype.ttf', 37, 'The Bouba Team', (60, 255, 60))
+        self.team = data.render_text(data.FONT_TITLE, 37, 'The Bouba Team', (60, 255, 60))
         self.teamRect = self.team.get_rect()
 
         self.background = data.load_image('credits.png')

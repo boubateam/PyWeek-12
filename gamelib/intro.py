@@ -66,7 +66,7 @@ class Intro(pygame.surface.Surface):
         tmpContent = None
         top = 0
         for partText in text:
-            tmpContent = data.render_text('ace.ttf', textsize, partText, (255, 255, 255))
+            tmpContent = data.render_text(data.FONT_MAIN, textsize, partText, (255, 255, 255))
             tmpSize = tmpContent.get_rect()
             tmpSize.centerx = self.get_rect().centerx
             tmpSize.top = top
