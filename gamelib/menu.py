@@ -11,6 +11,7 @@ class Menu(pygame.surface.Surface):
         pygame.surface.Surface.__init__(self, size)
 
         self.menus = menus
+        self.menusRect = []
         self.current = 0
 
         self.menu = None
@@ -30,14 +31,26 @@ class Menu(pygame.surface.Surface):
                 color = (255, 255, 0)
 
             self.menu = self.font.render(text, True, color)
+            
             self.menurect = self.menu.get_rect()
             self.menurect.centerx = self.get_rect().centerx
             self.menurect.top = top
-
+            
+            
+            
             top = top + self.menurect.height * 1.5
-
+            
             self.blit(self.menu, self.menurect)
+            
+            if len(self.menusRect) < len(self.menus):
+                self.menusRect.append((self.menurect,action))
 
+    def click(self, pos):
+        print('click at '+ str(pos))
+        for menuRect,action in self.menusRect:
+            if menuRect.collidepoint(pos):
+                action()
+    
     def prev(self):
         self.current = self.current - 1
 
@@ -72,7 +85,9 @@ class MenuScene(scene.Scene):
                 self.menu.next()
             elif event.key in [ pygame.K_RETURN, pygame.K_SPACE]:
                 self.menu.execute()
-
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.menu.click(event.pos)
+        
     def update(self):
         self.menu.update()
 

@@ -30,11 +30,13 @@ class IntroScene(scene.Scene):
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_ESCAPE: 
                 self.game.director.endScene()
             elif event.key == pygame.K_SPACE and self.intros[self.currentIntroIdx].canPass:
                 self.nextIntro()
-
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.game.director.endScene()
+            
     def nextIntro(self):
         if self.currentIntroIdx + 1 < len(self.intros):
             self.currentIntroIdx += 1
