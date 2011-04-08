@@ -4,17 +4,30 @@
 import pygame
 import scene
 import data
+import string
 
 class GameOverScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(GameOverScene, self).__init__(game, name, index, config)
 
-        self.text = data.render_text('genotype.ttf', 37, 'Game Over', (255, 255, 255))
-        self.textrect = self.text.get_rect()
+        self.gameovertxt = data.render_text('genotype.ttf', 30, 'Game Over', (255, 255, 255))
+        self.gameovertxtRect = self.gameovertxt.get_rect()
         self.background = data.load_image('gameover.png')
 
         self.music_bg = data.load_sound('gameover.ogg')
-    
+        
+        self.teaserText = data.render_text('LiberationSans-Regular.ttf', 17, 'Who\'s the rockstar with 1000 points ?', (255, 255, 255))
+        self.teaserTextrect = self.teaserText.get_rect()
+        
+        #temp
+        self.teaserTextInputRect = self.teaserTextrect
+        self.blinkInputCounter = 0
+        self.blinkInputTime = 400
+        self.userFilledStr = []
+        self.usernickText = None
+        self.userFillingTextField = True
+        self.showUnderscore = True
+        
     def start(self):
         self.music_bg.play()
     
@@ -22,12 +35,55 @@ class GameOverScene(scene.Scene):
         self.music_bg.fadeout(1000)    
     
     def handleEvent(self, event):
-        if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONUP:
-            self.game.director.change('topscore')
+        
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.teaserTextInputRect.collidepoint(event.pos):
+                self.userFillingTextField = True
+            
+        if event.type == pygame.KEYDOWN:            
+            llen = len(self.userFilledStr)
+            if llen > 0 and self.userFilledStr[llen-1] ==  '_':
+                 self.userFilledStr = self.userFilledStr[0:-1]
+
+            if not self.userFillingTextField and event.key == pygame.K_ESCAPE:
+                self.game.director.change('menu')
+                
+            if self.userFillingTextField:
+                #if event.key == pygame.K_ENTER:
+                if event.key == pygame.K_BACKSPACE:
+                    self.userFilledStr = self.userFilledStr[0:-1]
+
+                elif event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:                    
+                    self.userFillingTextField = False
+                    self.saveUserName()
+                elif event.key <= 127:
+                    self.userFilledStr.append(chr(event.key))
 
     def update(self):
-        self.textrect.center = (320, 240)
+        self.gameovertxtRect.center = (320, 20)
+        self.usernickText = data.render_text('genotype.ttf', 17, string.join(self.userFilledStr), (255, 255, 255))
+        self.usernickTextRect = self.teaserText.get_rect()
+        self.teaserTextrect.center = (320, 50)
+        self.usernickTextRect.center = (320, 70)
+        
+        if pygame.time.get_ticks() > self.blinkInputCounter :
+            self.blinkInputCounter = pygame.time.get_ticks()+self.blinkInputTime
+            self.showUnderscore = not self.showUnderscore 
 
+        llen = len(self.userFilledStr)
+
+        if self.showUnderscore and (llen==0 or self.userFilledStr[llen-1] !=  '_'):
+            self.userFilledStr.append('_')
+        elif llen>0  and self.showUnderscore == False:
+            if self.userFilledStr[llen-1] == '_':
+                self.userFilledStr.pop()
+                
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
-        screen.blit(self.text, self.textrect)
+        screen.blit(self.gameovertxt, self.gameovertxtRect)
+        screen.blit(self.teaserText, self.teaserTextrect)
+        screen.blit(self.usernickText, self.usernickTextRect)
+        
+    def saveUserName(self):
+        
+        print "Save user here "+string.join(self.userFilledStr)

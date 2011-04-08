@@ -64,6 +64,14 @@ class LevelScene(scene.Scene):
         self.animBossRect.bottom = 240
         self.animBossTime = pygame.time.get_ticks() + 150
 
+
+        self.bottomPanel = pygame.Surface((640,240))
+        self.bottomPanel.fill((100, 100, 100))
+        self.bottomPanel.set_alpha(200)
+        
+        self.bottomText     = data.render_text('acmesa.ttf', 30, 'Get ready...', (255, 0, 0))
+        self.bottomTextRect = self.bottomText.get_rect()
+
         #self.seqStart()
 
     def start(self):
@@ -148,7 +156,11 @@ class LevelScene(scene.Scene):
                     if self.animBossActionCount == 14:
                         self.animBossActionCount = 0
                         self.animBossAction = 'moveup'
+                    self.bottomTextRect.center = (320, 360)
                 elif self.animBossAction == 'moveup':
+                    self.bottomText = data.render_text('acmesa.ttf', 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
+                    self.bottomTextRect.center = (400, 360)
+                    
                     self.animBossActionCount += 1
                     self.animBossRect.top -= 5
 
@@ -174,3 +186,5 @@ class LevelScene(scene.Scene):
 
         if not self.playing and not self.sequencing:
             screen.blit(self.animBossImage, self.animBossRect)
+            screen.blit(self.bottomPanel, (0, 240))
+            screen.blit(self.bottomText, self.bottomTextRect)
