@@ -68,7 +68,7 @@ class CreditsScene(scene.Scene):
 
         y += self.musicLabelRect.height * 2
         self.namesLabelRect.topleft = (25, y)
-        y += 7
+        y += 13
 
         i = 0
         x = 280
@@ -83,8 +83,7 @@ class CreditsScene(scene.Scene):
         self.teamRect.bottomright = (640 - 25, 480 - 25)
 
     def draw(self, screen):
-        #screen.blit(self.background, (0, 0))
-        screen.fill((0, 0, 0))
+        screen.blit(self.background, (0, 0))
 
         screen.blit(self.text, self.textrect)
         screen.blit(self.design, self.designRect)
