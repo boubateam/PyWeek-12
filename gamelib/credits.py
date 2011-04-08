@@ -61,9 +61,9 @@ class CreditsScene(scene.Scene):
         y += self.textrect.height * 2
 
         self.designLabelRect.topleft = (25, y)
-        self.designRect.topleft = (self.designLabelRect.right + 7, y + 6)
+        self.designRect.topleft = (self.designLabelRect.right + 7, y - 2)
 
-        self.musicRect.topright = (640 - 25, y + 6)
+        self.musicRect.topright = (640 - 25, y - 2)
         self.musicLabelRect.topright = (self.musicRect.left - 7, y)
 
         y += self.musicLabelRect.height * 2

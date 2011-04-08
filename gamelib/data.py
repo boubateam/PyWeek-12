@@ -12,7 +12,8 @@ data_py = os.path.abspath(os.path.dirname(__file__))
 data_dir = os.path.normpath(os.path.join(data_py, '..', 'data'))
 
 FONT_TITLE = 'convoy.ttf'
-FONT_MAIN = 'digitaldream.ttf'
+FONT_MAIN = 'DejaVuSans.ttf'
+FONT_FIX = 'digitaldream.ttf'
 
 def filepath(filename):
     '''Determine the path to a file in the data directory.

@@ -14,7 +14,7 @@ class LevelScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(LevelScene, self).__init__(game, name, index, config)
 
-        self.font = data.load_font(data.FONT_MAIN, 23)
+        self.font = data.load_font(data.FONT_FIX, 23)
 
         self.count = config['count'] if 'count' in config else 9
         self.delta = config['delta'] if 'delta' in config else 1000
@@ -194,9 +194,9 @@ class LevelScene(scene.Scene):
 
     def draw(self, screen):
         if self.stepCountElapsingTime:
-            self.stepCounterText = data.render_text(data.FONT_MAIN, 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
+            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
         else:
-            self.stepCounterText = data.render_text(data.FONT_MAIN, 10, "Countdown:---", (255, 0,0))
+            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:---", (255, 0,0))
 
         screen.blit(self.background, (0, 0))
         screen.blit(self.stepCounterText, (270,250))
