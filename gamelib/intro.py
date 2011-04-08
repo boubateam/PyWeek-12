@@ -17,7 +17,6 @@ class IntroScene(scene.Scene):
         self.endTime = None
         self.currentIntroIdx = None
         self.intros = []
-        self.intros.append(Intro(2500, False, ['Ninth Kind'], 34))
         self.intros.append(Intro(5000, True, ['2038. The Earth.', 'Sonore Aliens wade in !', 'With their ultrasonic sounds', 'they want to destroy humanity !']))
         self.intros.append(Intro(7000, True, ['Thanks to', 'the found sumerian technology', 'dated 4000 years BC', 'human resistance can recreate', 'sonore attacks and defend the Earth.', '', 'Fight for the resistance !']))
 
