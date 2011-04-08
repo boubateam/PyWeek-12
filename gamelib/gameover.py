@@ -28,7 +28,7 @@ class GameOverScene(scene.Scene):
         self.usernickTextRect = None
         self.userFillingTextField = True
         self.showUnderscore = True
-        self.lScoreFile = open(data.filepath('topscore.txt'), 'rw+')
+        self.lScoreFile = open(data.filepathforwrite('topscore.txt'), 'r+')
         self.userscores = None
         self.orderedTabScore = []
         self.buildTabScore()
