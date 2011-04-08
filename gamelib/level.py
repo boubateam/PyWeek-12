@@ -36,6 +36,8 @@ class LevelScene(scene.Scene):
 
         self.music_bg = data.load_sound('background.ogg', self.name)
         self.music_bg.set_volume(0.3)
+        self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
+        self.music_pre_bg.set_volume(0.3)
 
         self.sequence.associateTheme(self.name) 
         self.buttons.associateTheme(self.name)
@@ -79,6 +81,11 @@ class LevelScene(scene.Scene):
             self.bg_channel =  self.music_bg.play(-1, fade_ms=100)
         else:
             self.bg_channel.unpause()
+        
+        if self.pre_bg_channel == None:
+            self.pre_bg_channel =  self.music_pre_bg.play(fade_ms=100)
+        else:
+            self.pre_bg_channel.unpause()
 
         if not self.playing and not self.sequencing:
             self.animBossTime = pygame.time.get_ticks() + 150
@@ -86,7 +93,9 @@ class LevelScene(scene.Scene):
     def end(self):
         if self.bg_channel != None :
             self.bg_channel.pause()
-
+        if self.pre_bg_channel != None :
+            self.pre_bg_channel.pause()
+            
     def seqStart(self):
         self.seqindex += 1
         self.sequence.play(self.seqindex, self.seqEnd)
