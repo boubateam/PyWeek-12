@@ -62,23 +62,26 @@ class LevelScene(scene.Scene):
         self.animBossRect = self.animBossImage.get_rect()
         self.animBossRect.left = 360
         self.animBossRect.bottom = 240
-        self.animBossTime = pygame.time.get_ticks() + 150
-
+        self.animBossTime = 0
 
         self.bottomPanel = pygame.Surface((640,240))
         self.bottomPanel.fill((100, 100, 100))
         self.bottomPanel.set_alpha(200)
-        
+
         self.bottomText     = data.render_text('acmesa.ttf', 30, 'Get ready...', (255, 0, 0))
         self.bottomTextRect = self.bottomText.get_rect()
+        self.bottomTextRect.center = (320, 360)
 
         #self.seqStart()
 
     def start(self):
-        if self.bg_channel == None :
+        if self.bg_channel == None:
             self.bg_channel =  self.music_bg.play(-1, fade_ms=100)
         else:
             self.bg_channel.unpause()
+
+        if not self.playing and not self.sequencing:
+            self.animBossTime = pygame.time.get_ticks() + 150
 
     def end(self):
         if self.bg_channel != None :
