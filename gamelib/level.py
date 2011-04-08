@@ -156,16 +156,18 @@ class LevelScene(scene.Scene):
                     if self.animBossActionCount == 14:
                         self.animBossActionCount = 0
                         self.animBossAction = 'moveup'
+
                     self.bottomTextRect.center = (320, 360)
+
                 elif self.animBossAction == 'moveup':
                     self.bottomText = data.render_text('acmesa.ttf', 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
                     self.bottomTextRect.center = (400, 360)
-                    
+
                     self.animBossActionCount += 1
-                    
-                    if self.animBossActionCount <= 8:
+
+                    if self.animBossActionCount <= 10:
                         self.animBossRect.top -= 5
-                    elif self.animBossActionCount>8 and self.animBossActionCount<16:
+                    elif self.animBossActionCount > 10 and self.animBossActionCount < 16:
                         rect = pygame.Rect(0, 5,
                                            self.animBossRect.w,
                                            self.animBossRect.h - 5,
@@ -175,7 +177,6 @@ class LevelScene(scene.Scene):
                     elif self.animBossActionCount == 16:
                         self.animBossActionCount = 0
                         self.animBossAction = None
-                        
                 else:
                     self.seqStart()
 
