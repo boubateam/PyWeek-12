@@ -90,7 +90,6 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         if self.wait and pygame.time.get_ticks() > self.waitTime:
             self.waitEnd()
             self.waitExec()
-        
 
         pygame.sprite.OrderedUpdates.update(self)
 
@@ -116,24 +115,19 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.active = None
 
 class SequenceButtonGroup(ButtonGroup):
-
     def __init__(self, size, position, diff, space, count=9, delta=750,delta_next=200):
         ButtonGroup.__init__(self, size, position, diff, space, count, delta)
-
 
         self.sequence = [random.randint(0, count - 1) for i in range(count)]
 
         self.animateSequence = []
         self.animateCallback = None
 
-        
         self.waitNext = False
         self.waitNextTime = 0
         self.deltaNext = delta_next
-    
 
         self.played = False
-        
 
     def associateTheme(self,  theme):
         self.theme = theme
@@ -160,7 +154,7 @@ class SequenceButtonGroup(ButtonGroup):
             ButtonGroup.update(self)
         elif self.waitNext and pygame.time.get_ticks() > self.waitNextTime:
             self.waitNextEnd()
-    
+
     def waitNextStart(self):
         self.waitNext = True
         self.waitNextTime = pygame.time.get_ticks() + self.deltaNext
@@ -191,14 +185,13 @@ class SequenceButtonGroup(ButtonGroup):
 class PlayableButtonGroup(ButtonGroup):
     def __init__(self, size, position, diff, space, count=9, delta=750):
         ButtonGroup.__init__(self, size, position, diff, space, count, delta)
-    
+
     def associateTheme(self,  theme):
         self.theme = theme
 
         for button in self:
             button.associateTheme('playable' ,self.theme)
 
-    
     def click(self, pos):
         if not self.animating:
             for index in range(self.count):
@@ -208,8 +201,6 @@ class PlayableButtonGroup(ButtonGroup):
                     self.animate(button)
                     return index
 
-            
-        
         return None
 
     def push(self, index):

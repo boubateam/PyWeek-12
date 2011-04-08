@@ -14,13 +14,13 @@ class HowtoScene(scene.Scene):
 
         self.background = data.load_image('credits.png')
         self.music_bg = data.load_sound('credits.ogg')
-    
+
     def start(self):
         self.music_bg.play(-1,fade_ms=1000)
-        
+
     def end(self):
         self.music_bg.fadeout(1000)
-        
+
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:

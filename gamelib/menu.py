@@ -104,9 +104,9 @@ class MainMenuScene(MenuScene):
     def end(self):
         pass
 
-        
     def play(self):
         self.music_bg.fadeout(4000)
+        self.game.points = 0 # New Game = New Points
         self.game.director.endScene(True)
 
     def credits(self):
