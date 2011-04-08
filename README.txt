@@ -43,4 +43,5 @@ you win and are allowed to go to the next level.
 
 LICENSE:
 
-This game skellington is placed in the Public Domain.
+This game (Ninth Kind) is under the terms of the WTFPL license. View COPYING
+for more information.

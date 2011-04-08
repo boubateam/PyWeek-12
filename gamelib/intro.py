@@ -21,12 +21,12 @@ class IntroScene(scene.Scene):
         self.intros.append(Intro(7000, True, ['Thanks to', 'the found sumerian technology', 'dated 4000 years BC', 'human resistance can recreate', 'sonore attacks and defend the Earth.', '', 'Fight for the resistance !']))
 
     def start(self):
-        self.music.play(-1, fade_ms=4000)
+        self.game.channel = self.game.music.play(-1, fade_ms=4000)
         self.currentIntroIdx = 0
         self.endTime = pygame.time.get_ticks() + self.intros[0].duration
 
     def end(self):
-        self.music.fadeout(2000)
+        pass
 
     def handleEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -66,7 +66,7 @@ class Intro(pygame.surface.Surface):
         tmpContent = None
         top = 0
         for partText in text:
-            tmpContent = data.render_text('ace.ttf', textsize, partText, (255, 255, 255))
+            tmpContent = data.render_text(data.FONT_MAIN, textsize, partText, (255, 255, 255))
             tmpSize = tmpContent.get_rect()
             tmpSize.centerx = self.get_rect().centerx
             tmpSize.top = top

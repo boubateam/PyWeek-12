@@ -17,7 +17,7 @@ class Menu(pygame.surface.Surface):
         self.menu = None
         self.menurect = None
 
-        self.font = data.load_font('convoy.ttf', 45)
+        self.font = data.load_font(data.FONT_TITLE, 45)
         self.set_colorkey((0, 0, 0)) # Transparent background
 
     def update(self):
@@ -110,29 +110,26 @@ class MainMenuScene(MenuScene):
                  ('Exit', self.exit))
 
         MenuScene.__init__(self, game, name, index, config, (320, 270), menus)
-        self.music_bg = data.load_sound('menu.ogg')
-        self.music_bg.set_volume(0.4)
     
     def start(self):
-        self.music_bg.play(-1,fade_ms=1000)
+        if self.game.channel != None:
+            self.game.channel.unpause()
         
     def end(self):
-        pass
+        if self.game.channel != None :
+            self.game.channel.pause()
 
     def play(self):
-        self.music_bg.fadeout(4000)
         self.game.points = 0 # New Game = New Points
         self.game.director.endScene(True)
 
     def credits(self):
-        self.music_bg.fadeout(1000)
         self.game.director.changeAndBack('credits')
 
     def howto(self):
         self.game.director.changeAndBack('howto')
 
     def exit(self):
-        self.music_bg.fadeout(1000)
         self.game.end()
 
     def draw(self, screen):

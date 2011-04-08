@@ -14,7 +14,7 @@ class LevelScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(LevelScene, self).__init__(game, name, index, config)
 
-        self.font = data.load_font(None, 23)
+        self.font = data.load_font(data.FONT_FIX, 23)
 
         self.count = config['count'] if 'count' in config else 9
         self.delta = config['delta'] if 'delta' in config else 1000
@@ -70,7 +70,7 @@ class LevelScene(scene.Scene):
         self.bottomPanel.fill((100, 100, 100))
         self.bottomPanel.set_alpha(200)
 
-        self.bottomText     = data.render_text('acmesa.ttf', 30, 'Get ready...', (255, 0, 0))
+        self.bottomText     = data.render_text(data.FONT_MAIN, 30, 'Get ready...', (255, 0, 0))
         self.bottomTextRect = self.bottomText.get_rect()
         self.bottomTextRect.center = (320, 360)
 
@@ -172,7 +172,7 @@ class LevelScene(scene.Scene):
                     self.bottomTextRect.center = (320, 360)
 
                 elif self.animBossAction == 'moveup':
-                    self.bottomText = data.render_text('acmesa.ttf', 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
+                    self.bottomText = data.render_text(data.FONT_MAIN, 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
                     self.bottomTextRect.center = (400, 360)
 
                     self.animBossActionCount += 1
@@ -194,9 +194,9 @@ class LevelScene(scene.Scene):
 
     def draw(self, screen):
         if self.stepCountElapsingTime:
-            self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
+            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
         else:
-            self.stepCounterText = data.render_text('DIGITALDREAM.ttf', 10, "Countdown:---", (255, 0,0))
+            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:---", (255, 0,0))
 
         screen.blit(self.background, (0, 0))
         screen.blit(self.stepCounterText, (270,250))
