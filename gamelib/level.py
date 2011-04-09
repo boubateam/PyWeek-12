@@ -33,7 +33,7 @@ class LevelScene(scene.Scene):
         self.playing = False
 
         self.background = data.load_image('background.png')
-        
+        self.ray = data.load_image('ray.png')
         self.piano = data.load_image('piano.png')
 
         self.music_bg = data.load_sound('background.ogg', self.name)
@@ -68,6 +68,8 @@ class LevelScene(scene.Scene):
         self.animBossRect.left = 350
         self.animBossRect.bottom = 280
         self.animBossTime = 0
+        self.animBossShowRaw = False
+
         self.counterRect = [266,250,110,8]
         self.counterRectDecSizePerStep = 110.0/self.counterStepPerClick
 
@@ -82,14 +84,14 @@ class LevelScene(scene.Scene):
         self.bottomTextRect = self.bottomText.get_rect()
         self.bottomTextRect.center = (320, 360)
 
-   #     self.seqStart()
+        #self.seqStart()
 
     def start(self):
         if self.bg_channel == None:
             self.bg_channel =  self.music_bg.play(-1, fade_ms=100)
         else:
             self.bg_channel.unpause()
-        
+
         if self.pre_bg_channel == None:
             self.pre_bg_channel =  self.music_pre_bg.play(fade_ms=100)
         else:
@@ -103,7 +105,7 @@ class LevelScene(scene.Scene):
             self.bg_channel.pause()
         if self.pre_bg_channel != None :
             self.pre_bg_channel.pause()
-            
+
     def seqStart(self):
         self.seqindex += 1
         self.sequence.play(self.seqindex, self.seqEnd)
@@ -152,7 +154,6 @@ class LevelScene(scene.Scene):
                     self.game.points += (self.points - (self.counterStepPerClick - lessPoints)) * self.pointsMulti
 
     def update(self):
-
         self.sequence.update()
         self.buttons.update()
         self.pointsText = self.font.render('%d' % (self.game.points, ), False, (255, 255, 255))
@@ -184,6 +185,7 @@ class LevelScene(scene.Scene):
                     if self.animBossActionCount == 14:
                         self.animBossActionCount = 0
                         self.animBossAction = 'moveup'
+                        self.animBossShowRaw = True
 
                     self.bottomTextRect.center = (320, 360)
 
@@ -205,26 +207,31 @@ class LevelScene(scene.Scene):
                     elif self.animBossActionCount == 20:
                         self.animBossActionCount = 0
                         self.animBossAction = None
+                        self.animBossShowRaw = False
+                        self.background = data.load_image('background.png', self.name)
                 else:
                     self.seqStart()
 
     def draw(self, screen):
-            
         screen.blit(self.background, (0, 0))
-        widthF = int(self.counterRectDecSizePerStep*self.currentCounterStep)
-        redColo = int(self.incrRedColorUnit*self.currentCounterStep)
-        blueColo = int(self.decrBlueColorUnit*self.currentCounterStep)
-        self.incrRedColorUnit = 255.0/self.counterStepPerClick
-        self.decrBlueColorUnit = 255.0/self.counterStepPerClick
+
+        if self.animBossShowRaw:
+            screen.blit(self.ray, (260, 158))
+
+        widthF = int(self.counterRectDecSizePerStep * self.currentCounterStep)
+        redColo = int(self.incrRedColorUnit * self.currentCounterStep)
+        blueColo = int(self.decrBlueColorUnit * self.currentCounterStep)
+        self.incrRedColorUnit = 255.0 / self.counterStepPerClick
+        self.decrBlueColorUnit = 255.0 / self.counterStepPerClick
         tmpv = 255-redColo
 
         if tmpv > 255:
             redColo = 255
         if blueColo < 0:
             blueColo = 0
-            
+
         pygame.draw.rect(screen, (255-redColo,0,blueColo), (self.counterRect[0], self.counterRect[1], widthF, self.counterRect[3]))     
-        
+
         self.sequence.draw(screen)
         self.buttons.draw(screen)
 
