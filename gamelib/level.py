@@ -24,7 +24,7 @@ class LevelScene(scene.Scene):
         self.pointsText = None
 
         self.sequence = button.SequenceButtonGroup((20, 20), (210, 100), 15, 5, self.count, self.delta)
-        self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 20, 15, self.count, self.delta)
+        self.buttons = button.PlayableButtonGroup((50, 150), (35, 300), 20, 15, self.count, 750)
 
         self.seqindex = 0
         self.sequencing = False
