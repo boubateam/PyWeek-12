@@ -20,6 +20,7 @@ class LevelScene(scene.Scene):
         self.delta = config['delta'] if 'delta' in config else 1000
 
         self.points = config['points'] if 'points' in config else 500
+        self.volume = config['volume'] if 'volume' in config else 0.3
         self.pointsMulti = config['pointsMulti'] if 'pointsMulti' in config else 1
         self.pointsText = None
 
@@ -37,7 +38,7 @@ class LevelScene(scene.Scene):
         self.piano = data.load_image('piano.png')
 
         self.music_bg = data.load_sound('background.ogg', self.name)
-        self.music_bg.set_volume(0.3)
+        self.music_bg.set_volume(self.volume)
         self.music_pre_bg = data.load_sound('pre-background.ogg', self.name)
         self.music_pre_bg.set_volume(0.3)
 
