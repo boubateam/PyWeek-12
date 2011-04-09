@@ -28,7 +28,7 @@ class Game(object):
 
     def run(self):
         self.initLevels()
-        self.director.change('menu')
+        self.director.change('intro')
         self.director.run()
 
     def end(self):
