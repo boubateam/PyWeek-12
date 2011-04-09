@@ -57,8 +57,6 @@ class GameOverScene(scene.Scene):
             if self.teaserTextInputRect.collidepoint(event.pos):
                 self.userFillingTextField = True
         
-        print "handleevent"
-        
         if event.type == pygame.KEYDOWN:
             llen = len(self.userFilledStr)
             if llen > 0 and self.userFilledStr[llen-1] ==  '_':
