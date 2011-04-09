@@ -17,7 +17,7 @@ class HowtoScene(scene.Scene):
         fontText.set_bold(True)
         
         texts = [
-            {'text':'1) The boss generate 1 to 9 sounds', 'top':30, 'left':50},
+            {'text':'1) The boss generates 1 to 9 sounds', 'top':30, 'left':50},
             {'text':'2) You must copy the generated sequence', 'top':250, 'left':20}
         ]
         
