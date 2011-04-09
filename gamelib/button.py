@@ -111,6 +111,8 @@ class ButtonGroup(pygame.sprite.OrderedUpdates):
         self.active.active = True
 
     def animateEnd(self):
+        self.active.channel.stop()
+        self.active.channel = None
         self.active.active = False
         self.active = None
 
