@@ -13,7 +13,7 @@ class CreditsScene(scene.Scene):
         self.textrect = self.text.get_rect()
 
         font = data.load_font(data.FONT_MAIN, 17)
-        names = ('ahsio', 'cyqui', 'gleuh', 'greg0ire', 'joksnet')
+        names = ('cyqui', 'gleuh', 'greg0ire', 'joksnet')
 
         self.designLabel = data.render_text(data.FONT_TITLE, 23, 'Design:', (255, 255, 127))
         self.designLabelRect = self.designLabel.get_rect()
@@ -76,7 +76,7 @@ class CreditsScene(scene.Scene):
             value[1].center = (x, y)
             x += 130
             i += 1
-            if i % 3 == 0:
+            if i % 2 == 0:
                 y += value[1].height * 1.5
                 x = 280
 
