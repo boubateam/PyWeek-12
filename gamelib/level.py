@@ -82,7 +82,7 @@ class LevelScene(scene.Scene):
         self.bottomTextRect = self.bottomText.get_rect()
         self.bottomTextRect.center = (320, 360)
 
-        self.seqStart()
+   #     self.seqStart()
 
     def start(self):
         if self.bg_channel == None:
