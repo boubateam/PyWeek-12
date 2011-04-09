@@ -153,12 +153,20 @@ class LevelScene(scene.Scene):
                 if sumPoints:
                     self.game.points += (self.points - (self.counterStepPerClick - lessPoints)) * self.pointsMulti
 
+    def oneButtonALaFois(self):
+        
+        for i in self.buttons:
+            if i.active :
+                return True
+            
+        return False
+        
     def update(self):
         self.sequence.update()
         self.buttons.update()
         self.pointsText = self.font.render('%d' % (self.game.points, ), False, (255, 255, 255))
 
-        if self.stepCountElapsingTime:
+        if self.stepCountElapsingTime and not self.oneButtonALaFois():
             if pygame.time.get_ticks() > self.stepElapsedTimeCounter:
                 self.currentCounterStep -= 1
                 self.stepElapsedTimeCounter = pygame.time.get_ticks() + self.stepElapsingInTime
