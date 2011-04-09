@@ -80,7 +80,7 @@ class LevelScene(scene.Scene):
         self.bottomPanel.fill((100, 100, 100))
         self.bottomPanel.set_alpha(200)
 
-        self.bottomText     = data.render_text(data.FONT_MAIN, 30, 'Get ready...', (255, 0, 0))
+        self.bottomText     = data.render_text(data.FONT_MAIN, 30, self.name.replace('-', ' ') + " starting in...", (255, 0, 0))
         self.bottomTextRect = self.bottomText.get_rect()
         self.bottomTextRect.center = (320, 360)
 
@@ -199,7 +199,8 @@ class LevelScene(scene.Scene):
 
                 elif self.animBossAction == 'moveup':
                     self.bottomText = data.render_text(data.FONT_MAIN, 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
-                    self.bottomTextRect.center = (400, 360)
+                    self.bottomTextRect = self.bottomText.get_rect()
+                    self.bottomTextRect.center = (320, 360)
 
                     self.animBossActionCount += 1
 
