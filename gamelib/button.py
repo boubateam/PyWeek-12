@@ -35,7 +35,7 @@ class Button(pygame.sprite.Sprite):
         if self.active:
             self.image = self.activeImage
             self.rect = self.activeRect
-
+            
             if self.channel == None:
                 self.channel = self.sound.play()
         else:
