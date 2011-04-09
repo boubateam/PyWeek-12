@@ -56,7 +56,9 @@ class GameOverScene(scene.Scene):
         if event.type == pygame.MOUSEBUTTONUP:
             if self.teaserTextInputRect.collidepoint(event.pos):
                 self.userFillingTextField = True
-
+        
+        print "handleevent"
+        
         if event.type == pygame.KEYDOWN:
             llen = len(self.userFilledStr)
             if llen > 0 and self.userFilledStr[llen-1] ==  '_':
@@ -64,13 +66,15 @@ class GameOverScene(scene.Scene):
 
             if not self.userFillingTextField and event.key in [ pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_SPACE]:
                 self.game.director.change('menu')
-
+            elif self.userFillingTextField and event.key == pygame.K_ESCAPE:
+                self.game.director.change('menu')
+            
             if self.userFillingTextField:
                 #if event.key == pygame.K_ENTER:
                 if event.key == pygame.K_BACKSPACE:
                     self.userFilledStr = self.userFilledStr[0:-1]
 
-                elif event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:                    
+                elif event.key == pygame.K_RETURN:                    
                     self.userFillingTextField = False
                     self.saveUserName()
                 elif event.key <= 127 and event.key >= 97:
@@ -113,6 +117,7 @@ class GameOverScene(scene.Scene):
                 screen.blit(tabScoreName,rect)
 
     def saveUserName(self):
+        print "save username"
         self.lScoreFile = open(data.filepath('topscore.txt'), 'a+')
         lstr = "".join(self.userFilledStr)
         self.lScoreFile.write(str(self.game.points)+"-"+str(lstr.strip())+os.linesep)
