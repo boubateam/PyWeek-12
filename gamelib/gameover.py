@@ -11,7 +11,9 @@ class GameOverScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(GameOverScene, self).__init__(game, name, index, config)
 
-        self.gameovertxt = data.render_text(data.FONT_TITLE, 30, 'Game Over', (255, 255, 255))
+        gameovermessage = self.count = config['message'] if 'message' in config else 'Game Over'
+
+        self.gameovertxt = data.render_text(data.FONT_TITLE, 30, gameovermessage, (255, 255, 255))
         self.gameovertxtRect = self.gameovertxt.get_rect()
         self.background = data.load_image('gameover.png')
 
