@@ -48,12 +48,13 @@ class LevelScene(scene.Scene):
         # step counter management
         self.stepElapsingInTime = 1
         self.stepElapsedTimeCounter = 0
-        self.counterStepPerClick = 500
+        self.counterStepPerClick = config['timetoclick'] if 'timetoclick' in config else 200
         self.currentCounterStep = self.counterStepPerClick
 
         # counting only when button animation is over
         self.stepCountElapsingTime = False
         self.stepCounterText = None
+        self.rectWidth = 0
 
         boss = data.load_image('boss.png', self.name)
         boss.set_colorkey((255, 0, 255))
@@ -65,6 +66,11 @@ class LevelScene(scene.Scene):
         self.animBossRect.left = 360
         self.animBossRect.bottom = 240
         self.animBossTime = 0
+        self.counterRect = [266,250,110,8]
+        self.counterRectDecSizePerStep = 110.0/self.counterStepPerClick
+
+        self.incrRedColorUnit = 255.0/self.counterStepPerClick
+        self.decrBlueColorUnit = 255.0/self.counterStepPerClick
 
         self.bottomPanel = pygame.Surface((640,240))
         self.bottomPanel.fill((100, 100, 100))
@@ -74,7 +80,7 @@ class LevelScene(scene.Scene):
         self.bottomTextRect = self.bottomText.get_rect()
         self.bottomTextRect.center = (320, 360)
 
-        #self.seqStart()
+        self.seqStart()
 
     def start(self):
         if self.bg_channel == None:
@@ -141,19 +147,18 @@ class LevelScene(scene.Scene):
                     sumPoints = True
 
                 if sumPoints:
-                    self.game.points += (self.points - (500 - lessPoints)) * self.pointsMulti
+                    self.game.points += (self.points - (self.counterStepPerClick - lessPoints)) * self.pointsMulti
 
     def update(self):
+
         self.sequence.update()
         self.buttons.update()
-
         self.pointsText = self.font.render('%d' % (self.game.points, ), False, (255, 255, 255))
 
         if self.stepCountElapsingTime:
             if pygame.time.get_ticks() > self.stepElapsedTimeCounter:
                 self.currentCounterStep -= 1
                 self.stepElapsedTimeCounter = pygame.time.get_ticks() + self.stepElapsingInTime
-
             if self.currentCounterStep < 0:
                 self.game.director.change('gameover')
 
@@ -202,14 +207,22 @@ class LevelScene(scene.Scene):
                     self.seqStart()
 
     def draw(self, screen):
-        if self.stepCountElapsingTime:
-            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:"+string.zfill(str(self.currentCounterStep),3), (255, 0,0))
-        else:
-            self.stepCounterText = data.render_text(data.FONT_FIX, 10, "Countdown:---", (255, 0,0))
-
+            
         screen.blit(self.background, (0, 0))
-        screen.blit(self.stepCounterText, (270,250))
+        widthF = int(self.counterRectDecSizePerStep*self.currentCounterStep)
+        redColo = int(self.incrRedColorUnit*self.currentCounterStep)
+        blueColo = int(self.decrBlueColorUnit*self.currentCounterStep)
+        self.incrRedColorUnit = 255.0/self.counterStepPerClick
+        self.decrBlueColorUnit = 255.0/self.counterStepPerClick
+        tmpv = 255-redColo
 
+        if tmpv > 255:
+            redColo = 255
+        if blueColo < 0:
+            blueColo = 0
+            
+        pygame.draw.rect(screen, (255-redColo,0,blueColo), (self.counterRect[0], self.counterRect[1], widthF, self.counterRect[3]))     
+        
         self.sequence.draw(screen)
         self.buttons.draw(screen)
 

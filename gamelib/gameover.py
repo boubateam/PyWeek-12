@@ -46,8 +46,6 @@ class GameOverScene(scene.Scene):
             
         self.orderedTabScore.sort(reverse=True)
         
-        print self.orderedTabScore
-
     def start(self):
         self.music_bg.play()
 
