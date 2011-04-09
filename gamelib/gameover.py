@@ -42,7 +42,7 @@ class GameOverScene(scene.Scene):
         
         for i in self.userscores:
             curinfo = i.partition('-')
-            self.orderedTabScore.append((curinfo[0], curinfo[2].strip()))
+            self.orderedTabScore.append((int(curinfo[0]), curinfo[2].strip()))
             
         self.orderedTabScore.sort(reverse=True)
         
@@ -109,7 +109,7 @@ class GameOverScene(scene.Scene):
         y = 70
         for userPts, username in self.orderedTabScore:
                 y+=20
-                tabScoreName = data.render_text(data.FONT_TITLE, 17, userPts+"-"+username, (255, 255, 255))
+                tabScoreName = data.render_text(data.FONT_TITLE, 17, str(userPts)+"-"+username, (255, 255, 255))
                 rect = tabScoreName.get_rect()
                 rect.center = (320, y)
                 screen.blit(tabScoreName,rect)
