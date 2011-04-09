@@ -33,6 +33,8 @@ class LevelScene(scene.Scene):
         self.playing = False
 
         self.background = data.load_image('background.png')
+        
+        self.piano = data.load_image('piano.png')
 
         self.music_bg = data.load_sound('background.ogg', self.name)
         self.music_bg.set_volume(0.3)
@@ -62,8 +64,8 @@ class LevelScene(scene.Scene):
         self.animBossActionCount = 0
         self.animBossImage = boss # pygame.transform.scale(boss, (170, 170))
         self.animBossRect = self.animBossImage.get_rect()
-        self.animBossRect.left = 360
-        self.animBossRect.bottom = 240
+        self.animBossRect.left = 350
+        self.animBossRect.bottom = 280
         self.animBossTime = 0
 
         self.bottomPanel = pygame.Surface((640,240))
@@ -165,13 +167,13 @@ class LevelScene(scene.Scene):
                     self.animBossActionCount += 1
 
                     self.animBossImage = pygame.transform.scale(self.animBossImage,
-                        (self.animBossRect.w - 10, self.animBossRect.h - 10))
+                        (self.animBossRect.w - 9, self.animBossRect.h - 9))
 
                     bottom = self.animBossRect.bottom
                     left = self.animBossRect.left
 
                     self.animBossRect = self.animBossImage.get_rect()
-                    self.animBossRect.bottom = bottom
+                    self.animBossRect.bottom = bottom - 2
                     self.animBossRect.left = left - 4
 
                     if self.animBossActionCount == 14:
@@ -188,14 +190,14 @@ class LevelScene(scene.Scene):
 
                     if self.animBossActionCount <= 10:
                         self.animBossRect.top -= 5
-                    elif self.animBossActionCount > 10 and self.animBossActionCount < 16:
+                    elif self.animBossActionCount > 10 and self.animBossActionCount < 20:
                         rect = pygame.Rect(0, 5,
                                            self.animBossRect.w,
                                            self.animBossRect.h - 5,
                                            )
                         self.animBossImage = self.animBossImage.subsurface(rect)
                         self.animBossRect.h -= 5
-                    elif self.animBossActionCount == 16:
+                    elif self.animBossActionCount == 20:
                         self.animBossActionCount = 0
                         self.animBossAction = None
                 else:
@@ -217,5 +219,6 @@ class LevelScene(scene.Scene):
 
         if not self.playing and not self.sequencing:
             screen.blit(self.animBossImage, self.animBossRect)
+            screen.blit(self.piano, (0,240))
             screen.blit(self.bottomPanel, (0, 240))
             screen.blit(self.bottomText, self.bottomTextRect)
