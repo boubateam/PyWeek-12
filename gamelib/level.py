@@ -60,7 +60,15 @@ class LevelScene(scene.Scene):
 
         boss = data.load_image('boss.png', self.name)
         boss.set_colorkey((255, 0, 255))
-
+        
+        miniboss = data.load_image('boss_mini.png', self.name)
+        miniboss.set_colorkey((255, 0, 255))    
+            
+        self.animMiniBossImage = miniboss # pygame.transform.scale(boss, (170, 170))
+        self.animMiniBossRect = self.animMiniBossImage.get_rect()
+        self.animMiniBossRect.left = 302
+        self.animMiniBossRect.bottom = 243
+        
         self.animBossAction = 'scale'
         self.animBossActionCount = 0
         self.animBossImage = boss # pygame.transform.scale(boss, (170, 170))
@@ -190,7 +198,7 @@ class LevelScene(scene.Scene):
                     self.animBossRect.bottom = bottom - 2
                     self.animBossRect.left = left - 4
 
-                    if self.animBossActionCount == 14:
+                    if self.animBossActionCount == 15:
                         self.animBossActionCount = 0
                         self.animBossAction = 'moveup'
                         self.animBossShowRaw = True
@@ -198,6 +206,8 @@ class LevelScene(scene.Scene):
                     self.bottomTextRect.center = (320, 360)
 
                 elif self.animBossAction == 'moveup':
+                    
+                    self.animBossRect = self.animMiniBossImage.get_rect()
                     self.bottomText = data.render_text(data.FONT_MAIN, 30, str(4 - (self.animBossActionCount / 4)), (255, 0, 0))
                     self.bottomTextRect = self.bottomText.get_rect()
                     self.bottomTextRect.center = (320, 360)
@@ -205,14 +215,14 @@ class LevelScene(scene.Scene):
                     self.animBossActionCount += 1
 
                     if self.animBossActionCount <= 10:
-                        self.animBossRect.top -= 5
+                        self.animMiniBossRect.top -= 5
                     elif self.animBossActionCount > 10 and self.animBossActionCount < 20:
                         rect = pygame.Rect(0, 5,
-                                           self.animBossRect.w,
-                                           self.animBossRect.h - 5,
+                                           self.animMiniBossRect.w,
+                                           self.animMiniBossRect.h - 5,
                                            )
-                        self.animBossImage = self.animBossImage.subsurface(rect)
-                        self.animBossRect.h -= 5
+                        self.animMiniBossImage = self.animMiniBossImage.subsurface(rect)
+                        self.animMiniBossRect.h -= 5
                     elif self.animBossActionCount == 20:
                         self.animBossActionCount = 0
                         self.animBossAction = None
@@ -247,7 +257,11 @@ class LevelScene(scene.Scene):
         screen.blit(self.pointsText, (10, 10))
 
         if not self.playing and not self.sequencing:
-            screen.blit(self.animBossImage, self.animBossRect)
+            if self.animBossAction=='moveup':
+                screen.blit(self.animMiniBossImage, self.animMiniBossRect)
+            else:
+                screen.blit(self.animBossImage, self.animBossRect)
+                
             screen.blit(self.piano, (0,240))
             screen.blit(self.bottomPanel, (0, 240))
             screen.blit(self.bottomText, self.bottomTextRect)

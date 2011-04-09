@@ -40,7 +40,7 @@ class Game(object):
         self.director.register('alien-meeting', LevelScene, {'count': 9, "timetoclick": 200, 'delta': 1000, 'pointsMulti': 1 })
         self.director.register('alien-chat', LevelScene, {'count': 9, "timetoclick": 100, 'delta': 750, 'pointsMulti': 2 })
         self.director.register('alien-war', LevelScene, {'count': 9, "timetoclick": 50, 'delta': 350, 'pointsMulti': 3 })
-        self.director.register('youwin', GameOverScene, {'message':'Congratulations !'})
+        self.director.register('youwin', GameOverScene, {'message':'Congratulations !','music':'credits.ogg'})
         self.director.register('credits', CreditsScene)
         self.director.register('howto', HowtoScene)
         self.director.register('gameover', GameOverScene, {'message':'Game Over'})
