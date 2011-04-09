@@ -11,13 +11,14 @@ class GameOverScene(scene.Scene):
     def __init__(self, game, name, index, config=None):
         super(GameOverScene, self).__init__(game, name, index, config)
 
-        gameovermessage = self.count = config['message'] if 'message' in config else 'Game Over'
+        gameovermessage = config['message'] if 'message' in config else 'Game Over'
+        gameovermusic = config['music'] if 'music' in config else 'gameover.ogg'
 
         self.gameovertxt = data.render_text(data.FONT_TITLE, 30, gameovermessage, (255, 255, 255))
         self.gameovertxtRect = self.gameovertxt.get_rect()
         self.background = data.load_image('gameover.png')
 
-        self.music_bg = data.load_sound('gameover.ogg')
+        self.music_bg = data.load_sound(gameovermusic)
 
         self.teaserText = data.render_text(data.FONT_MAIN, 17, 'Who\'s the rockstar with '+str(self.game.points)+' points ?', (255, 255, 255))
         self.teaserTextrect = self.teaserText.get_rect()
