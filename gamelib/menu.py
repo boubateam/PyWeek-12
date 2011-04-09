@@ -135,7 +135,9 @@ class MainMenuScene(MenuScene):
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         
+        self.menu.font.set_underline(True)
         title = self.menu.font.render("Ninth Kind", True, (255, 255, 255))
+        self.menu.font.set_underline(False)
         titlerect = title.get_rect()
         titlerect.centerx = screen.get_rect().centerx
         titlerect.top = 30
