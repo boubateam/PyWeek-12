@@ -46,7 +46,6 @@ class Menu(pygame.surface.Surface):
                 self.menusRect.append((self.menurect,action))
 
     def click(self, pos):
-        print('click at '+ str(pos))
         for menuRect,action in self.menusRect:
             if menuRect.collidepoint(pos):
                 action()
@@ -109,9 +108,9 @@ class MainMenuScene(MenuScene):
         self.logoNumber = 0
         self.logoTime = pygame.time.get_ticks() + self.logoStep
 
-        for i in range(8):
+        for i in range(0,9):
             self.logoImages.append(data.load_image('menu' + str(i + 1) + '.png'))
-
+            
         menus = (('Start Game', self.play),
                  ('How to play', self.howto),
                  ('Credits', self.credits),

@@ -115,7 +115,6 @@ class GameOverScene(scene.Scene):
                 screen.blit(tabScoreName,rect)
 
     def saveUserName(self):
-        print "save username"
         self.lScoreFile = open(data.filepath('topscore.txt'), 'a+')
         lstr = "".join(self.userFilledStr)
         self.lScoreFile.write(str(self.game.points)+"-"+str(lstr.strip())+os.linesep)
