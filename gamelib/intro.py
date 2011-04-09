@@ -19,9 +19,24 @@ class IntroScene(scene.Scene):
         self.intros = []
         self.intros.append(Intro(5000, True, ['2038. The Earth.', 'Sonore Aliens wade in !', 'With their ultrasonic sounds', 'they want to destroy humanity !']))
         self.intros.append(Intro(7000, True, ['Thanks to', 'the found sumerian technology', 'dated 4000 years BC', 'human resistance can recreate', 'sonore attacks and defend the Earth.', '', 'Fight for the resistance !']))
+        
+        self.blinkText = None
+        self.blinkTextRect = None
+        self.blinkInputCounter = 0
+        self.blinkInputTime = 500
+        self.showBlinkText = True
 
     def start(self):
+        #Blink text
+        self.blinkText = data.render_text(data.FONT_MAIN, 25, '(Press SPACE to skip)', (51, 204, 0))
+        self.blinkTextRect = self.blinkText.get_rect()
+        self.blinkTextRect.center = (320, 30)
+        self.blinkTextRect.top = 430
+        
+        #music
         self.game.channel = self.game.music.play(-1, fade_ms=4000)
+        
+        #which intro
         self.currentIntroIdx = 0
         self.endTime = pygame.time.get_ticks() + self.intros[0].duration
 
@@ -47,6 +62,10 @@ class IntroScene(scene.Scene):
     def update(self):
         if pygame.time.get_ticks() > self.endTime:
             self.nextIntro()
+        
+        if pygame.time.get_ticks() > self.blinkInputCounter :
+            self.blinkInputCounter = pygame.time.get_ticks()+self.blinkInputTime
+            self.showBlinkText = not self.showBlinkText 
 
     def draw(self, screen):
         currIntro = self.intros[self.currentIntroIdx]
@@ -55,6 +74,9 @@ class IntroScene(scene.Scene):
 
         screen.blit(self.background, (0, 0))
         screen.blit(currIntro, currIntroRect)
+        
+        if self.showBlinkText:
+            screen.blit(self.blinkText, self.blinkTextRect)
 
 class Intro(pygame.surface.Surface):
     def __init__(self, duration, canPass, text, textsize = 25):
