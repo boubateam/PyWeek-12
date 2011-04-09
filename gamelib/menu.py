@@ -104,17 +104,25 @@ class MainMenuScene(MenuScene):
     def __init__(self, game, name, index, config=None):
         self.background = data.load_image('menu.png')
 
+        self.logoStep = 750
+        self.logoImages = []
+        self.logoNumber = 0
+        self.logoTime = pygame.time.get_ticks() + self.logoStep
+
+        for i in range(8):
+            self.logoImages.append(data.load_image('menu' + str(i + 1) + '.png'))
+
         menus = (('Start Game', self.play),
                  ('How to play', self.howto),
                  ('Credits', self.credits),
                  ('Exit', self.exit))
 
         MenuScene.__init__(self, game, name, index, config, (320, 270), menus)
-    
+
     def start(self):
         if self.game.channel != None:
             self.game.channel.unpause()
-        
+
     def end(self):
         if self.game.channel != None :
             self.game.channel.pause()
@@ -132,9 +140,20 @@ class MainMenuScene(MenuScene):
     def exit(self):
         self.game.end()
 
+    def update(self):
+        super(MainMenuScene, self).update()
+
+        if pygame.time.get_ticks() > self.logoTime:
+            self.logoTime = pygame.time.get_ticks() + self.logoStep
+            self.logoNumber += 1
+
+            if self.logoNumber > 8:
+                self.logoNumber = 0
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
-        
+        screen.blit(self.logoImages[self.logoNumber], (50, 310))
+
         super(MainMenuScene, self).draw(screen)
 
 class PauseMenuScene(MenuScene):
