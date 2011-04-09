@@ -60,7 +60,7 @@ class LevelScene(scene.Scene):
 
         self.animBossAction = 'scale'
         self.animBossActionCount = 0
-        self.animBossImage = pygame.transform.scale(boss, (170, 170))
+        self.animBossImage = boss # pygame.transform.scale(boss, (170, 170))
         self.animBossRect = self.animBossImage.get_rect()
         self.animBossRect.left = 360
         self.animBossRect.bottom = 240
