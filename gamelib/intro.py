@@ -28,7 +28,7 @@ class IntroScene(scene.Scene):
 
     def start(self):
         #Blink text
-        self.blinkText = data.render_text(data.FONT_MAIN, 25, '(Press SPACE to skip)', (51, 204, 0))
+        self.blinkText = data.render_text(data.FONT_MAIN, 15, '(Press SPACE to skip)', (51, 204, 0))
         self.blinkTextRect = self.blinkText.get_rect()
         self.blinkTextRect.center = (320, 30)
         self.blinkTextRect.top = 430
