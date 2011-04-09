@@ -46,8 +46,6 @@ class GameOverScene(scene.Scene):
             
         self.orderedTabScore.sort(reverse=True)
         
-        print self.orderedTabScore
-
     def start(self):
         self.music_bg.play()
 
@@ -64,7 +62,7 @@ class GameOverScene(scene.Scene):
             if llen > 0 and self.userFilledStr[llen-1] ==  '_':
                  self.userFilledStr = self.userFilledStr[0:-1]
 
-            if not self.userFillingTextField and event.key == pygame.K_ESCAPE:
+            if not self.userFillingTextField and event.key in [ pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_SPACE]:
                 self.game.director.change('menu')
 
             if self.userFillingTextField:
